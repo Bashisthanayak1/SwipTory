@@ -1,7 +1,15 @@
+import Homepage from "./PagesJS/homepage";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 function App() {
   return (
-    <h1>hi</h1>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="*" element={<Navigate to="/" />} ></Route>
+      </Routes>
+    </BrowserRouter>
+
   );
 }
 
