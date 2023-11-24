@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 import Hamburger from 'hamburger-react'
 import Mobilepagenavbar from './navbarForMobile.js'
+import Register from '../../Register/Register.js'
 
 const Navbar = () => {
-
+  //usestate for Humberger icon
   const [IsHamburgerClicked, setIsHamburgerClicked] = useState(false);
+  // usestate for registration button
+  const [IsRegisterClicked, setRegisterClicked] = useState(false)
+
   function ClickHamburger() {
     setIsHamburgerClicked(() => !IsHamburgerClicked)
+  }
+
+  function registerButton() {
+    setRegisterClicked((pre) => !pre)
   }
 
   return (
@@ -14,7 +22,7 @@ const Navbar = () => {
       <nav className='navbar'>
         <h2>SwipTory</h2>
         <div>
-          <button>Register Now</button>
+          <button onClick={registerButton}>Register Now</button>
           <button>Sign In</button>
         </div>
       </nav>
@@ -23,8 +31,8 @@ const Navbar = () => {
         <Hamburger ></Hamburger>
       </div>
 
-      {IsHamburgerClicked ? <Mobilepagenavbar /> : ""}
-
+      {IsHamburgerClicked && <Mobilepagenavbar />}
+      {IsRegisterClicked && <Register setRegisterClicked={setRegisterClicked}/>}
 
     </div>
   )

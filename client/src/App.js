@@ -1,4 +1,5 @@
-import Homepage from "./PagesJS/homepage";
+import Register from "./Register/Register";
+import Homepage from "./homepage";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<Navigate to="/" />} ></Route>
       </Routes>
     </BrowserRouter>

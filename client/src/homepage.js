@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from './Navbar/navbar'
-import Stories from './Stories/stories'
+import Navbar from './PagesJS/Navbar/navbar'
+import Stories from './PagesJS/Stories/stories'
 
 const homepage = () => {
     return (

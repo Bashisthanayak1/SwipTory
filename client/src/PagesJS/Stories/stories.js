@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import categoriesData from './categoriesData'
 
-const stories = () => {
+const Stories = () => {
+    const [clickedIndex, setClickedIndex] = useState(null);
+
+    function clickOnAnyCategory(i) {
+        console.log(i);
+        setClickedIndex(i);
+
+    }
+
     return (
         <div className='categories--container'>
             {categoriesData.map((v, i) =>
-                <div className='categoryDiv' >
+                <div className={`categoryDiv ${clickedIndex === i ? 'clicked' : ''}`} key={i} onClick={() => clickOnAnyCategory(i)} >
                     <h1>{v.Name}</h1>
                     <img src={v.Image} alt={v.Name} />
                 </div>)}
@@ -13,4 +21,4 @@ const stories = () => {
     )
 }
 
-export default stories
+export default Stories
