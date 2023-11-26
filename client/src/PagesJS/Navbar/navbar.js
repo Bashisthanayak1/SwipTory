@@ -12,6 +12,7 @@ const Navbar = () => {
   const [IsRegisterClicked, setRegisterClicked] = useState(false)
   // usestate for Sign button
   const [IsSignInClicked, setSignInClicked] = useState(false)
+  const [isOpen, setOpen] = useState(false)
 
 
 
@@ -41,12 +42,12 @@ const Navbar = () => {
       </nav>
 
       <div className="Hamburger" onClick={ClickHamburger}>
-        <Hamburger ></Hamburger>
+        <Hamburger toggled={isOpen} toggle={setOpen} />
       </div>
 
       {IsHamburgerClicked && <Mobilepagenavbar />}
       {IsRegisterClicked && <Register setRegisterClicked={setRegisterClicked} />}
-      {IsSignInClicked && <Login setSignInClicked={setSignInClicked}/>}
+      {IsSignInClicked && <Login setSignInClicked={setSignInClicked} />}
     </div>
   )
 }

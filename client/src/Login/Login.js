@@ -1,5 +1,7 @@
+import axios from 'axios'
 import React, { useState } from 'react'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Login = (props) => {
     //useStates
     const [closeLogin, setCloseLogin] = useState(true)
@@ -23,16 +25,68 @@ const Login = (props) => {
         })
     }
 
+    //create account button functions
+    function submitLoginForm(e) {
+        e.preventDefault();
+        //removing white space
+        const password = userDetails.password.trim();
+        if (userDetails.username && password !== "") {
+            axios.post('http://localhost:8000/login', userDetails).then((res) => {
+                console.log('Login :', res.data); // Log the response data
+                setuserDetails({
+                    username: "",
+                    password: "",
+                })
+                toast.success('Successfully Loggedin', {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                })
+                setCloseLogin(() => false)
+            }).catch((err) => {
+                console.error('Login error:', err); // Log the error
+
+                return toast.error('unable to Login', {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+        } else {
+            return toast.error('Empty details', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
+
     return (
 
         <>
+            <ToastContainer />
             {closeLogin &&
                 <div className='register--divs--container'>
                     <div className='register--div' >
                         <div className='Cross--for--close' onClick={CrossSign}>x</div>
                         <h2 className='RegisterBox--name'>Login to Swip Tory</h2>
 
-                        <form action="/" method='POST'>
+                        <form action="" method='POST' onSubmit={submitLoginForm}>
                             <label htmlFor="">Username</label>
                             <input type="text" placeholder='Username' name='username' value={userDetails.username} onChange={updatingInputValues} />
                             <br />

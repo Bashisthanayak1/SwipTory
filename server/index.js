@@ -48,14 +48,41 @@ app.post("/register", async (req, res) => {
 })
 
 // Login API- ********************************************************-Login API
-app.post("/Login", (req, res) => {
-    const { username, password } = req.body;
-    //checking in database if loggedin user exist or not by username;
-    const Is_LoggedIn_User_Exists = UserModel.findOne({ username });
-    if (!Is_LoggedIn_User_Exists) {
-        return console.log('Not a user');
-    } else {
-        console.log('welcome user');
+app.post("/login", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        //checking in database if loggedin user exist or not by username;
+        const Is_LoggedIn_User_Exists = await UserModel.findOne({ username });
+        const Is_Password_Correct = await UserModel.findOne({ password });
+
+        console.log('Is_LoggedIn_User_Exists ', Is_LoggedIn_User_Exists);
+        if (!Is_LoggedIn_User_Exists) {
+            console.log('Not a user');
+            return res.status(400).json({
+                status: 'FAIL',
+                message: 'User not exists'
+            })
+        }
+        if (!Is_Password_Correct) {
+            console.log('Incorrect Password');
+            return res.status(400).json({
+                status: 'FAIL',
+                message: 'Incorrect Password'
+            })
+        }
+        if (Is_LoggedIn_User_Exists && Is_Password_Correct) {
+            console.log('welcome user');
+            return res.status(200).json({
+                status: 'sucess',
+                message: 'Successfully loggedIn'
+            })
+        }
+    } catch (error) {
+        console.log('catch (error)- ', error);
+        return res.status(400).json({
+            status: 'FAIL',
+            message: 'Something went wrong'
+        })
     }
 })
 
