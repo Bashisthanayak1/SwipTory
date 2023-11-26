@@ -1,13 +1,10 @@
+import axios from 'axios'
 import React, { useState } from 'react'
-
-import axios from "axios"
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const Register = (props) => {
+const Login = (props) => {
     //useStates
-    const [closeRegister, setCloseRegister] = useState(true)
+    const [closeLogin, setCloseLogin] = useState(true)
     const [userDetails, setuserDetails] = useState({
         username: "",
         password: "",
@@ -16,8 +13,8 @@ const Register = (props) => {
     //function runs when we click cross sign
     function CrossSign() {
         console.log('clicked x');
-        setCloseRegister(() => false)
-        props.setRegisterClicked(() => false)
+        setCloseLogin(() => false)
+        props.setSignInClicked(() => false)
     }
 
     //function runs when we input 
@@ -29,18 +26,20 @@ const Register = (props) => {
     }
 
     //create account button functions
-    function submitRegisterForm(e) {
+    function submitLoginForm(e) {
         e.preventDefault();
         //removing white space
         const password = userDetails.password.trim();
         if (userDetails.username && password !== "") {
-            axios.post('http://localhost:8000/register', userDetails).then((res) => {
-                console.log('Registration success:', res.data); // Log the response data
+            axios.post('http://localhost:8000/login', userDetails).then((res) => {
+                console.log('Login :', res.data); // Log the response data
+                //saving username in sessionStorage 
+                sessionStorage.setItem("username", userDetails.username);
                 setuserDetails({
                     username: "",
                     password: "",
                 })
-                toast.success('Successfully registred', {
+                toast.success('Successfully Loggedin', {
                     position: "top-right",
                     autoClose: 1000,
                     hideProgressBar: true,
@@ -50,11 +49,14 @@ const Register = (props) => {
                     progress: undefined,
                     theme: "light",
                 })
-                setCloseRegister(() => false)
+                setTimeout(() => {
+                    setCloseLogin(() => false)
+                    props.setSignInClicked(() => false)
+                }, 1900)
             }).catch((err) => {
-                console.error('Registration error:', err); // Log the error
+                console.error('Login error:', err); // Log the error
 
-                return toast.error('unable to register', {
+                return toast.error('unable to Login', {
                     position: "top-right",
                     autoClose: 1000,
                     hideProgressBar: true,
@@ -80,27 +82,30 @@ const Register = (props) => {
     }
 
     return (
+
         <>
             <ToastContainer />
-            {closeRegister &&
+            {closeLogin &&
                 <div className='register--divs--container'>
                     <div className='register--div' >
                         <div className='Cross--for--close' onClick={CrossSign}>x</div>
-                        <h2 className='RegisterBox--name'>Register to Swip Tory</h2>
+                        <h2 className='RegisterBox--name'>Login to Swip Tory</h2>
 
-                        <form action="" onSubmit={submitRegisterForm}>
+                        <form action="" method='POST' onSubmit={submitLoginForm}>
                             <label htmlFor="">Username</label>
                             <input type="text" placeholder='Username' name='username' value={userDetails.username} onChange={updatingInputValues} />
                             <br />
                             <label htmlFor="">Password</label>
                             <input type="password" placeholder='Password' name='password' value={userDetails.password} onChange={updatingInputValues} />
                             <br />
-                            <input type="submit" value="register" id='PopUp--register--Button' />
+                            <input type="submit" value="login" id='PopUp--register--Button' />
                         </form>
                     </div >
                 </div >}
+
         </>
+
     )
 }
 
-export default Register
+export default Login

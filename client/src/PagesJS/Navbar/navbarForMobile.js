@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Register from '../../Register/Register';
-import Login from '../../Login/Login';
+import Register from '../../RegisterPopUp/RegisterPopUp';
+import Login from '../../LoginPopUP/LoginPopUp';
 
 const Mobilepagenavbar = (props) => {
 
@@ -12,7 +12,7 @@ const Mobilepagenavbar = (props) => {
 
     // register button
     function registerButton() {
-        setRegisterClicked((pre) => !pre)
+        setRegisterClicked((pre) => true)
         setShowMobilenav((pre) => !pre)
     }
 
