@@ -8,32 +8,43 @@ const Mobilepagenavbar = (props) => {
     const [IsRegisterClicked, setRegisterClicked] = useState(false)
     // usestate for Sign button
     const [IsSignInClicked, setSignInClicked] = useState(false)
-    const [showMobileNav, setShowMobilenav] = useState(false);
-
+    //using for x to close the mobile popup
+    const [IsXClicked, setIsXClicked] = useState(true)
     // register button
     function registerButton() {
+        //opening registration box pop-up
         setRegisterClicked((pre) => true)
-        setShowMobilenav((pre) => !pre)
+        //closing Mobilenav popup
+        setIsXClicked(false)
+
     }
 
     //Sign button
     function SignInButton() {
-        setSignInClicked((pre) => !pre)
-        setShowMobilenav((pre) => !pre)
+        //opening signin box popup
+        setSignInClicked((pre) => true)
+        //closing Mobilenav popup
+        setIsXClicked(false)
     }
 
+    function clickPopUpX() {
+        setIsXClicked(false)
+        props.setIsHamburgerClicked(() => false)
+
+    }
 
     return (
-
         <>
             {IsRegisterClicked && <Register setRegisterClicked={setRegisterClicked} />}
             {IsSignInClicked && <Login setSignInClicked={setSignInClicked} />}
-            <div className='Navbar--for--Mobile' style={{ display: showMobileNav ? "none" : "block" }}>
+            {IsXClicked && <div className='Navbar--for--Mobile' >
+                <div className='mobile__popUp_X' onClick={clickPopUpX}>X</div>
                 <div>
                     <button onClick={registerButton}>Register Now</button>
                     <button onClick={SignInButton}>Sign In</button>
                 </div>
-            </div>
+            </div>}
+
 
         </>
 

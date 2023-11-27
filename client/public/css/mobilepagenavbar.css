@@ -8,7 +8,7 @@
   position: absolute;
   top: 3;
   background-color: white;
-  z-index:4;
+  z-index: 4;
 }
 
 .Navbar--for--Mobile > div button {
@@ -34,6 +34,14 @@
 }
 .Navbar--for--Mobile > div button:nth-child(2) {
   padding: 0.8vw 3.5vw;
+}
+
+.mobile__popUp_X {
+  font-size: 5vw;
+  cursor: pointer;
+  position: absolute;
+  top: 2vw;
+  right: 0;
 }
 
 @media screen and (min-width: 757px) {

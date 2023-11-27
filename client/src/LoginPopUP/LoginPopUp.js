@@ -49,9 +49,12 @@ const Login = (props) => {
                     progress: undefined,
                     theme: "light",
                 })
+
                 setTimeout(() => {
+
                     setCloseLogin(() => false)
                     props.setSignInClicked(() => false)
+
                 }, 1900)
             }).catch((err) => {
                 console.error('Login error:', err); // Log the error

@@ -4,7 +4,7 @@ body {
 .navbar {
   border: 1px solid transparent;
   width: 100vw;
-  height: 10vh;
+  height: 12vh;
   box-shadow: 0 4px 15px #00000026;
   display: block;
   display: flex;
@@ -51,7 +51,7 @@ body {
   .Hamburger {
     display: block;
   }
-  .navbar button {
+  .Reg_Sig--Large--page {
     display: none;
   }
 }
