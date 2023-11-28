@@ -4,7 +4,7 @@ import Hamburger from 'hamburger-react'
 const NavbarAfterSignIN = (props) => {
     const [shouldShowInfo, setshouldShowInfo] = useState(false)
     //addstory popUp state
-    const [openAddStory, setOpenAddStory] = useState(false)
+    const [openAddStory, setOpenAddStory] = useState(true)
     //defining state of an array
     const [slideToPrint, setSlideToPrint] = useState(0)
 
@@ -35,6 +35,10 @@ const NavbarAfterSignIN = (props) => {
         setSlideToPrint((pre) => (++pre))
         console.log(slideToPrint);
     }
+    //x of slide button
+    function slideButtonCross() {
+        // setSlideToPrint((pre) => (pre - 1))
+    }
 
     return (
         <div className='AfterSignIN--div'>
@@ -64,14 +68,19 @@ const NavbarAfterSignIN = (props) => {
                             <button>slide 1</button>
                             <button>slide 2</button>
                             <button>slide 3</button>
-                            <button onClick={AddStory} disabled={(slideToPrint === 3) ? true : false} style={{ cursor: (slideToPrint === 3) ? 'not-allowed' : "pointer" }}>Add+</button>
                             {(() => {
                                 let elements = [];
                                 for (let i = 0; i < slideToPrint; i++) {
-                                    elements.push(<button>slide {i + 4}</button>);
+                                    elements.push(
+                                        <button className='A--New--Slide' >
+                                            <span onClick={slideButtonCross}>x</span>
+                                            slide {i + 4}
+                                        </button>);
                                 }
                                 return elements;
                             })()}
+                            <button onClick={AddStory} disabled={(slideToPrint === 3) ? true : false} style={{ cursor: (slideToPrint === 3) ? 'not-allowed' : "pointer" }}>Add+</button>
+
                         </div>
                         <div className='label--inputs--div'><label htmlFor="">Heading : </label>
                             <input type="text" placeholder='Your heading' id='Heading--input' />

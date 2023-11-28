@@ -95,6 +95,7 @@
   box-shadow: 0 4px 15px #0000001a;
   border-radius: 0px;
   padding: 2% 1%;
+  margin-top: 1%;
 }
 .slide--button--container > button:first-child {
   background-color: white;
@@ -102,6 +103,24 @@
 .slide--button--container > button:nth-child(2) {
   background-color: white;
   padding: 2% 1%;
+}
+
+/* slidebox x sign */
+.A--New--Slide {
+  position: relative;
+}
+.A--New--Slide > span {
+  color: red;
+  position: absolute;
+  right: -10px;
+  top: -14px;
+  font-size: 10px;
+}
+.A--New--Slide > span:hover {
+  transform: scale(1.2);
+}
+.A--New--Slide > span {
+  cursor: auto;
 }
 
 .label--inputs--div {
