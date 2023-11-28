@@ -6,7 +6,10 @@ const NavbarAfterSignIN = (props) => {
     //addstory popUp state
     const [openAddStory, setOpenAddStory] = useState(true)
     //defining state of an array
-    const [slideToPrint, setSlideToPrint] = useState(0)
+    const [slideToPrint, setSlideToPrint] = useState([1, 1, 1])
+    //adding divs border-color if it is clicked
+    const [SlideIsClicked, setSlideIsClicked] = useState(null)
+
 
     function ClkForInfoAndLogout() {
         setshouldShowInfo((pre) => !pre)
@@ -27,17 +30,47 @@ const NavbarAfterSignIN = (props) => {
     function AddStoryX() {
         //closing addstory popup when click X.
         setOpenAddStory((pre) => !pre)
-        setSlideToPrint(() => 0)
+        setSlideToPrint((pre) => [1, 1, 1])
     }
     //function runs when we click Add+ button
 
-    function AddStory() {
-        setSlideToPrint((pre) => (++pre))
-        console.log(slideToPrint);
+    function AddStorySlideButton() {
+        setTimeout(() => {
+            setSlideToPrint((prev) => [...prev, 1])
+        }, 100)
     }
     //x of slide button
-    function slideButtonCross() {
-        // setSlideToPrint((pre) => (pre - 1))
+    // function slideButtonCross(i) {
+    //     // console.log("before splice -", slideToPrint);
+    //     // console.log("index-", i);
+    //     // const modifyedArray = slideToPrint.splice(i, 1);
+    //     // console.log("after splice-", modifyedArray);
+    //     setSlideToPrint((pre) => {
+    //         return (pre.splice(i, 1))
+    //     })
+    // }
+
+    // function slideButtonCross(i) {
+    //     setSlideToPrint((prev) => {
+    //         const modifiedArray = [...prev];
+    //         modifiedArray.splice(i, 1);
+    //         return modifiedArray;
+    //     });
+    // }
+
+
+    function slideButtonCross(i) {
+        if (slideToPrint.length > 3) {
+            setTimeout(() => {
+                setSlideToPrint((prev) => prev.filter((_, index) => index !== i));
+            }, 500)
+        }
+    }
+
+    // modifying state if slide is clicked -for adding its border color
+    function Onclick__function_ForA_slide(i) {
+        console.log(i);
+        setSlideIsClicked(i)
     }
 
     return (
@@ -65,21 +98,21 @@ const NavbarAfterSignIN = (props) => {
                     <div className='add--story--div'>
                         <h1 className='add--story--div__cross' onClick={AddStoryX}>x</h1>
                         <div className='slide--button--container'>
-                            <button>slide 1</button>
-                            <button>slide 2</button>
-                            <button>slide 3</button>
-                            {(() => {
+
+                            {slideToPrint.length > 0 && (() => {
                                 let elements = [];
-                                for (let i = 0; i < slideToPrint; i++) {
+                                for (let i = 0; i < slideToPrint.length; i++) {
                                     elements.push(
-                                        <button className='A--New--Slide' >
-                                            <span onClick={slideButtonCross}>x</span>
-                                            slide {i + 4}
-                                        </button>);
+                                        <button onClick={() => Onclick__function_ForA_slide(i)} className={`A--New--Slide  ${SlideIsClicked === i ? 'clicked' : ''}`} key={i}>
+                                            {slideToPrint.length > 3 && <span onClick={() => slideButtonCross(i)}>x</span>}
+
+                                            slide {i + 1}
+                                        </button>)
                                 }
                                 return elements;
                             })()}
-                            <button onClick={AddStory} disabled={(slideToPrint === 3) ? true : false} style={{ cursor: (slideToPrint === 3) ? 'not-allowed' : "pointer" }}>Add+</button>
+                            {/* disabled={(slideToPrint.length === 3) ? true : false} style={{ cursor: (slideToPrint.length === 3) ? 'not-allowed' : "pointer" }} */}
+                            <button onClick={AddStorySlideButton} disabled={(slideToPrint.length === 6) ? true : false} style={{ cursor: (slideToPrint.length === 6) ? 'not-allowed' : "pointer" }} >Add+</button>
 
                         </div>
                         <div className='label--inputs--div'><label htmlFor="">Heading : </label>
