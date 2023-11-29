@@ -15,14 +15,24 @@ dotenv.config();
 
 //Mongoose :-------
 //define a schema
-
+//schema for register
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, }
 })
-// Define a Model based on the Schema
-const UserModel = mongoose.model("userdetails", userSchema)
+//schema for slides array of objects
+const slideSchema = new mongoose.Schema({
+    Your_heading: { type: String, required: true },
+    Story_Description: { type: String, required: true },
+    Add_Image_URL: { type: String, required: true },
+    Select_category: { type: String, required: true },
+    slideIndex: Number
+})
 
+// Define a Model based on the Schema for user registration
+const UserModel = mongoose.model("userdetails", userSchema)
+// Define a Model based on the Schema for slidedetails
+const SlideModel = mongoose.model("SlideDetails", slideSchema);
 
 
 // Register API- ********************************************************-Register API
@@ -86,7 +96,23 @@ app.post("/login", async (req, res) => {
     }
 })
 
-
+// Api for storing slides data
+app.post("/slideData", async (req, res) => {
+    try {
+        const data = await req.body;
+        SlideModel.insertMany(data).then(result => {
+            console.log('Documents inserted:');
+            return res.status(200).json({
+                status: 'sucess',
+                message: 'Successfully slide added'
+            })
+        }).catch(error => {
+            console.error('Error inserting documents:', error);
+        })
+    } catch (error) {
+        console.error(error)
+    }
+})
 
 
 app.listen(process.env.PORT, async () => {
