@@ -1,0 +1,81 @@
+.The--main--container {
+    border: 3px dotted rgb(0, 255, 132);
+    width: 500px;
+    height: 420px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slider-container {
+    border: 3px dotted red;
+    /* position: relative; */
+    width: 60%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .slide {
+    border: 1px solid springgreen;
+    width: 100%;
+    flex: 0 0 auto; /* Ensure each slide has a fixed size */
+  }
+  .slide > img {
+    height: 100%;
+  }
+  
+  .progress-container {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 23px;
+    left: 102px;
+    margin-top: 0px;
+  }
+  
+  /* .controls {
+    border: 2px solid blue;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0px;
+  } */
+  .controls > button:first-child {
+    position: absolute;
+    top: 45%;
+    left: 50px;
+  }
+  .controls > button:last-child {
+    position: absolute;
+    top: 45%;
+    right: 58px;
+  }
+  
+  .controls > button {
+    padding: 4px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 40px;
+  }
+  
+  .progress-bar {
+    height: 3px;
+    background-color: #ddd;
+    flex-grow: 1;
+    margin-right: 5px;
+    transition: width 1s ease-in-out, background-color 1s ease-in-out; /* Adjust the transition duration as needed */
+  }
+  
+  .progress-bar.active {
+    background-color: #ff0000; /* Red color for active progress bar */
+    width: 100%; /* Start with a width of 100% */
+  }
+  
+  /* +++++++++++++++++++++++++++++++ */

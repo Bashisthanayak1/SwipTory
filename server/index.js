@@ -114,6 +114,40 @@ app.post("/slideData", async (req, res) => {
     }
 })
 
+//Api for storing food data
+app.get("/CategoryData", async (req, res) => {
+    try {
+        //receiving the category we are searching via link
+        const whichCategory = req.query.Acategory;
+        if (whichCategory == "All") {
+            const AllData = await SlideModel.find();
+            if (AllData) {
+                res.status(200).json({
+                    categorydata: AllData
+                })
+            }
+        } else {
+            const Data = await SlideModel.find({ Select_category: whichCategory },
+                {
+                    Your_heading: 1,
+                    Story_Description: 1,
+                    Add_Image_URL: 1,
+                    Select_category: 1,
+                    slideIndex: 1,
+                })
+
+            if (Data) {
+                return res.status(200).json({
+                    categorydata: Data
+                })
+            }
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
+})
+
 
 app.listen(process.env.PORT, async () => {
     try {
