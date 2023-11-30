@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 
 const app = express()
-
 //middlewares ***************** ---- ******************
 app.use(express.json())
 //to get details from frontend
 app.use(cors())
 dotenv.config();
 //***************** ---- ******************
+const PORT = process.env.PORT || 8000
 
 
 //Mongoose :-------
@@ -149,7 +149,7 @@ app.get("/CategoryData", async (req, res) => {
 })
 
 
-app.listen(process.env.PORT, async () => {
+app.listen(PORT, async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URL)
         console.log(`Server successfully running on ${process.env.PORT}`);
