@@ -2,15 +2,15 @@ body {
   position: relative;
 }
 .div--black--shadow {
+  background-color: rgb(102, 102, 102, 0.8);
   position: absolute;
-  border: 1px solid transparent;
+  border: 1px solid blue;
   top: 0;
   width: 100vw;
-  height: 70%;
+  height: auto;
   z-index: 12;
   display: flex;
   justify-content: center;
-  background-color: rgb(102, 102, 102, 0.8);
 }
 
 .The--main--container {
@@ -23,6 +23,7 @@ body {
   justify-content: center;
   margin-top: 10px;
 }
+
 .slider-container {
   border: 3px dotted red;
   /* position: relative; */
@@ -45,14 +46,23 @@ body {
 .slide > img {
   height: 100%;
 }
-
+.the--image--heading {
+  position: absolute;
+  top: 20px;
+  left: 21vw;
+  z-index: 16;
+  font-weight: 200;
+  font-size: 35px;
+  cursor: pointer;
+  color: red;
+}
 .controls > button {
   padding: 4px;
   cursor: pointer;
   background-color: transparent;
   border: none;
   font-size: 40px;
-  color: white;
+  color: black;
 }
 
 .controls > button:first-child {
@@ -92,38 +102,47 @@ body {
 .X--for--close--autoSlider {
   position: absolute;
   top: 10px;
-  left: 138px;
+  left: 11vw;
   z-index: 13;
   color: white;
   font-weight: 200;
   font-size: 25px;
   cursor: pointer;
 }
+.X--for--close--autoSlider:hover {
+  transform: scale(0.9);
+}
 .fa-paper-plane {
   position: absolute;
   top: 35px;
-  right: 138px;
+  right: 11vw;
   z-index: 13;
   color: white;
   font-weight: 2;
   font-size: 23px;
   cursor: pointer;
 }
-.fa-bookmark {
+.fa-paper-plane:active {
+  transform: scale(0.9);
+}
+#AutoSlider--bookmark {
   position: absolute;
   bottom: 25px;
-  left: 138px;
+  left: 11vw;
   z-index: 13;
   color: white;
   font-weight: 200;
   font-size: 25px;
   cursor: pointer;
   padding: 0;
+}
+#AutoSlider--bookmark:active {
+  transform: scale(0.9);
 }
 .fa-heart {
   position: absolute;
   bottom: 27px;
-  right: 138px;
+  right: 11vw;
   z-index: 13;
   color: white;
   font-weight: 200;
@@ -131,5 +150,12 @@ body {
   cursor: pointer;
   padding: 0;
 }
-
+.fa-heart:active {
+  transform: scale(0.9);
+}
 /* +++++++++++++++++++++++++++++++ */
+.navbar--in--AUtoSlider {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

@@ -26,7 +26,8 @@ const slideSchema = new mongoose.Schema({
     Story_Description: { type: String, required: true },
     Add_Image_URL: { type: String, required: true },
     Select_category: { type: String, required: true },
-    slideIndex: Number
+    slideIndex: Number,
+
 })
 
 // Define a Model based on the Schema for user registration

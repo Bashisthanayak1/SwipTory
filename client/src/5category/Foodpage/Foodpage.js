@@ -1,16 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom"
 import '../Foodpage/FoodPage.css';
 import axios from 'axios';
-import AutoSlider from '../AutoSlider/AutoSlider';
 
 const Foodpage = () => {
+    let Navigate = useNavigate();
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
-    const [IsSliderDivClicked, setIsSliderDivClicked] = useState(false);
-    //slicing main array for get only 3 objects according to the clicking box index
-    const [slicedArray, setSlicedArray] = useState([]);
-
 
     useEffect(() => {
         async function foodFunction() {
@@ -52,22 +49,24 @@ const Foodpage = () => {
         console.log('foodArray lengt:- ', foodArray.length);
         SLCAR = foodArray.slice(i * 3, (i * 3) + 3);
         console.log("SLCAR array - ", SLCAR);
-        setSlicedArray(SLCAR);
-        setIsSliderDivClicked(true)
+
+        // Convert the array to a string for the URL
+        const slicedArrayString = encodeURIComponent(JSON.stringify(SLCAR));
+        // Navigate to AutoSlider with query parameter
+        Navigate(`/AutoSlider?slicedArray=${slicedArrayString}`);
     }
 
     return (
         <>
             <div className='Food--page--container' style={{ overflow: showMoreClicked ? 'visible' : 'hidden', height: showMoreClicked ? 'auto' : '500px' }}>
                 <h1 className='About--food--h1'>Top Stories About food</h1>
-                {!foodArray.length >= 3 && <h3>No stories Available</h3>}
+                {(!foodArray.length >= 1) && <h3>No stories Available</h3>}
 
-                {foodArray.length >= 4 &&
+                {foodArray.length >= 3 &&
                     divTOprint()
                 }
             </div>
             {foodArray.length >= 4 && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
-            {IsSliderDivClicked && <AutoSlider slicedArray={slicedArray} setIsSliderDivClicked={setIsSliderDivClicked} />}
 
         </>
     );
