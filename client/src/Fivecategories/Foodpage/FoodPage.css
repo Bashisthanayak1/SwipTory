@@ -5,7 +5,7 @@ body {
   font-family: DM Sans, sans-serif;
 }
 .Food--page--container {
-  border: 1px solid transparent;
+  /* border: 1px solid blue; */
   margin-top: 40px;
   padding-bottom: 10px;
   height: 500px;
@@ -15,7 +15,9 @@ body {
   margin-top: 25px;
   text-align: center;
 }
-
+.No--stories--h3{
+  text-align: center;
+}
 .Food--page--container > h3 {
   color: rgb(142, 142, 142);
   margin-top: 80px;
@@ -51,7 +53,7 @@ body {
   font-family: DM Sans, sans-serif;
   font-size: 18px;
   z-index: 2;
-  bottom: 9%;
+  bottom: 13%;
   left: 4%;
 }
 .DIv--OfA--slide > h2 {

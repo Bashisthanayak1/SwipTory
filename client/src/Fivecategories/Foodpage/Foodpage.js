@@ -8,31 +8,34 @@ const Foodpage = () => {
     let Navigate = useNavigate();
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
-
+    //C:\Users\bashi\SwipTory\client
     useEffect(() => {
         async function foodFunction() {
             try {
                 const foodData = await axios.get(`http://localhost:8000/CategoryData?Acategory=food`);
-                console.log('foodData ', foodData.data.categorydata);
+                // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
+
             } catch (error) {
                 console.error(error);
             }
         }
         foodFunction();
     }, []);
+    console.log('foodData:- ', foodArray);
 
 
     let arr = [];
     function divTOprint() {
-        for (let i = 0; i < (foodArray.length / 3); i++) {
-            arr.push(
-                <div className='DIv--OfA--slide' key={i} onClick={() => ClkSlideDIV(i)}>
-                    <img src={foodArray[i].Add_Image_URL} alt="img" />
-                    <h3>{foodArray[i].Your_heading}</h3>
-                    <h2>{foodArray[i].Story_Description}</h2>
+        //for array of objects and each onjects has an array in which  
+        foodArray.map((obj, index) => {
+            return arr.push(
+                <div className='DIv--OfA--slide' key={index} onClick={() => ClkSlideDIV(index)}>
+                    <img src={obj.aslide[0].Add_Image_URL} alt="img" key={index} />
+                    <h3 >{obj.aslide[0].Your_heading}</h3>
+                    <h2>{obj.aslide[0].Story_Description}</h2>
                 </div>)
-        }
+        })
         return arr;
     }
 
@@ -43,26 +46,32 @@ const Foodpage = () => {
 
     //when we click slide div to open slider 
     function ClkSlideDIV(i) {
-        console.log('sliderdiv clicked');
-        console.log(i);
-        let SLCAR = [];
-        console.log('foodArray lengt:- ', foodArray.length);
-        SLCAR = foodArray.slice(i * 3, (i * 3) + 3);
-        console.log("SLCAR array - ", SLCAR);
+        console.log('sliderdiv clicked', `index- ${i}`);
+        const clickedArray_of_obj_id = foodArray[i]._id;
+        console.log("Clicked arrayOfObject _id:- ", clickedArray_of_obj_id);
 
-        // Convert the array to a string for the URL
-        const slicedArrayString = encodeURIComponent(JSON.stringify(SLCAR));
-        // Navigate to AutoSlider with query parameter
-        Navigate(`/AutoSlider?slicedArray=${slicedArrayString}`);
+        //Navigate to slide page
+        Navigate(`/AutoSlider/${clickedArray_of_obj_id}`)
+
+
+
+
+
+
+        // // Convert the array to a string for the URL
+        // const slicedArrayString = encodeURIComponent(JSON.stringify(SLCAR));
+        // // Navigate to AutoSlider with query parameter
+        // Navigate(`/AutoSlider?slicedArray=${slicedArrayString}`);
     }
 
     return (
         <>
             <div className='Food--page--container' style={{ overflow: showMoreClicked ? 'visible' : 'hidden', height: showMoreClicked ? 'auto' : '500px' }}>
-                <h1 className='About--food--h1'>Top Stories About food</h1>
-                {(!foodArray.length >= 1) && <h3>No stories Available</h3>}
 
-                {foodArray.length >= 3 &&
+                <h1 className='About--food--h1'>Top Stories About food</h1>
+                {(!foodArray.length >= 1) && <h3 className='No--stories--h3'>No stories Available</h3>}
+
+                {foodArray.length >= 1 &&
                     divTOprint()
                 }
             </div>

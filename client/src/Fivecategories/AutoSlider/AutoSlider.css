@@ -130,26 +130,34 @@ body {
   bottom: 25px;
   left: 11vw;
   z-index: 13;
-  color: white;
-  font-weight: 200;
-  font-size: 25px;
   cursor: pointer;
-  padding: 0;
+  width: 18px;
 }
 #AutoSlider--bookmark:active {
   transform: scale(0.9);
 }
-.fa-heart {
+
+#HearatIcon--div {
   position: absolute;
-  bottom: 27px;
+  /* border: 1px solid rgb(38, 0, 255); */
+  display: flex;
+  bottom: 9px;
   right: 11vw;
   z-index: 13;
-  color: white;
-  font-weight: 200;
-  font-size: 25px;
   cursor: pointer;
-  padding: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
 }
+
+#HearatIcon--div > .heartIcon {
+  width: 25px;
+}
+
+#HearatIcon--div > .Heart--count {
+  color: white;
+}
+
 .fa-heart:active {
   transform: scale(0.9);
 }

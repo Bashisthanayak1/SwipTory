@@ -12,16 +12,16 @@ const NavbarAfterSignIN = (props) => {
     const [slideToPrint, setSlideToPrint] = useState([1, 1, 1])
     //adding divs border-color if it is clicked
     const [SlideIsClicked, setSlideIsClicked] = useState(null)
+
     //story details
     const [storyDetails, setStoryDetails] = useState({
         Your_heading: "",
         Story_Description: "",
         Add_Image_URL: "",
         Select_category: "",
-        slideIndex: 0
     })
     //saving all details in an array
-    let array = JSON.parse(sessionStorage.getItem("slideDetails")) || [];
+    let arrayForSlides = JSON.parse(sessionStorage.getItem("slideDetails")) || { aslide: [] };
 
 
     // ***************************************************************
@@ -81,16 +81,15 @@ const NavbarAfterSignIN = (props) => {
         setStoryDetails({ ...storyDetails, slideIndex: (SlideIsClicked || 0), [name]: value })
     }
     // ***************************************************************
-
     // modifying state if slide is clicked -for adding its border color
     function Onclick__function_ForA_slide(i) {
         console.log(i);
-        console.log(array);
+        console.log(arrayForSlides);
         //helps to indentify div for adding border color
         setSlideIsClicked(i)
         //checking if the array is empty or not
-        if (array && array.length > 0) { //if empty 
-            const AvailableInTheArray = array.find((obj) => obj.slideIndex === i);
+        if (arrayForSlides && arrayForSlides.aslide.length > 0) { //if empty 
+            const AvailableInTheArray = arrayForSlides.aslide.find((obj) => obj.slideIndex === i);
             if (AvailableInTheArray) {
                 console.log(AvailableInTheArray);
                 setStoryDetails({
@@ -104,11 +103,11 @@ const NavbarAfterSignIN = (props) => {
                 if (storyDetails.Your_heading.length > 1 && storyDetails.Story_Description.length > 1 && storyDetails.Add_Image_URL.length > 1 && storyDetails.Select_category.length > 1) {
 
                     //checking if the pbject with same slideIndex is in the array of object or not 
-                    const isObjectInArray = array.find((obj) => obj.slideIndex === storyDetails.slideIndex);
+                    const isObjectInArray = arrayForSlides.aslide.find((obj) => obj.slideIndex === storyDetails.slideIndex);
                     console.log('isObjectInArray- ', isObjectInArray);
                     if (!isObjectInArray) {
-                        array.push(storyDetails)
-                        sessionStorage.setItem("slideDetails", JSON.stringify(array));
+                        arrayForSlides.aslide.push(storyDetails)
+                        sessionStorage.setItem("slideDetails", JSON.stringify(arrayForSlides));
                         setStoryDetails({
                             Your_heading: "",
                             Story_Description: "",
@@ -142,8 +141,8 @@ const NavbarAfterSignIN = (props) => {
             //if array is empty add filled details into the array
             // array.push(storyDetails)
             if (storyDetails.Your_heading.length > 1 && storyDetails.Story_Description.length > 1 && storyDetails.Add_Image_URL.length > 1 && storyDetails.Select_category.length > 1) {
-                array.push(storyDetails)
-                sessionStorage.setItem("slideDetails", JSON.stringify(array));
+                arrayForSlides.aslide.push(storyDetails)
+                sessionStorage.setItem("slideDetails", JSON.stringify(arrayForSlides));
                 setStoryDetails({
                     Your_heading: "",
                     Story_Description: "",
@@ -164,13 +163,15 @@ const NavbarAfterSignIN = (props) => {
     }
 
     // ***************************************************************
-
     //clicking post for posting details
     function ClickPost() {
 
         if (storyDetails.Your_heading.length > 1 && storyDetails.Story_Description.length > 1 && storyDetails.Add_Image_URL.length > 1 && storyDetails.Select_category.length > 1) {
-            array.push(storyDetails)
-            sessionStorage.setItem("slideDetails", JSON.stringify(array));
+
+            arrayForSlides.aslide.push(storyDetails)
+
+            sessionStorage.setItem("slideDetails", JSON.stringify(arrayForSlides));
+
             setStoryDetails({
                 Your_heading: "",
                 Story_Description: "",
@@ -180,15 +181,14 @@ const NavbarAfterSignIN = (props) => {
             })
         }
 
-
         //accessing array from session storage to check if minimum 3 slides are added or not
-        // const accessArray = JSON.parse(sessionStorage.getItem("slideDetails")) || [];
-        console.log("after clicking postButton ,accessArray- ", array.length);
+        console.log("after clicking postButton ,accessArray- ", arrayForSlides.aslide.length);
 
-        if (array.length >= 3) {
-            axios.post("http://localhost:8000/slideData", array).then(() => {
+        if (arrayForSlides.aslide.length >= 3) {
+
+            axios.post("http://localhost:8000/AddSlideData", arrayForSlides).then(() => {
                 //after posting clear input tags text
-                array = [];
+                arrayForSlides.aslide = [];
                 setStoryDetails({
                     Your_heading: "",
                     Story_Description: "",
@@ -252,12 +252,13 @@ const NavbarAfterSignIN = (props) => {
                                     elements.push(
                                         <button onClick={() => Onclick__function_ForA_slide(i)} className={`A--New--Slide  ${SlideIsClicked === i ? 'clicked' : ''}`} key={i}>
                                             {slideToPrint.length > 3 && <span onClick={() => slideButtonCross(i)}>x</span>}
-
                                             slide {i + 1}
                                         </button>)
                                 }
                                 return elements;
-                            })()}
+                            })()
+                            }
+
                             {/* disabled={(slideToPrint.length === 3) ? true : false} style={{ cursor: (slideToPrint.length === 3) ? 'not-allowed' : "pointer" }} */}
                             <button onClick={AddStorySlideButton} disabled={(slideToPrint.length === 6) ? true : false} style={{ cursor: (slideToPrint.length === 6) ? 'not-allowed' : "pointer" }} >Add+</button>
 
