@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const SlideModel = require("./mongodb/slideSchema")
 const UserModel = require("./mongodb/userSchema");
-const LikeModel = require('./mongodb/likeSchema');
 
 
 const app = express()
@@ -16,8 +15,9 @@ dotenv.config();
 //***************** ---- ******************
 const PORT = process.env.PORT || 8000
 
+//------------------------------------------------->   USER API (START)  ------------------------------------------------->
 
-// Register API- ********************************************************-Register API
+// Register API- ************************
 app.post("/register", async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -39,7 +39,7 @@ app.post("/register", async (req, res) => {
     }
 })
 
-// Login API- ********************************************************-Login API
+// Login API- ***************************
 app.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -78,7 +78,10 @@ app.post("/login", async (req, res) => {
     }
 })
 
-// AddSlideData API- ********************************************************-AddSlideData API
+
+//------------------------------------------------------------------->  USER API (END)  ------------------------------------------------------> */
+
+// AddSlideData API- ************************
 
 // Api for storing slides data
 app.post("/AddSlideData", async (req, res) => {
@@ -86,22 +89,26 @@ app.post("/AddSlideData", async (req, res) => {
         const data = await req.body;
         console.log("data = await req.body:- ", data);
 
-        const newslide = new SlideModel(data,{ aslidelikearry: [] })
+        const newslide = new SlideModel(data, { aslidelikearry: [] })
         newslide.save()
         res.json(data)
 
     } catch (error) {
         console.log('/AddSlideData- ', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+
     }
 })
 
-// Getting CategoryData API- ********************************************************-Getting CategoryData API
+
+// Getting CategoryData API- **************
 
 //Api for storing food data
-app.get("/CategoryData", async (req, res) => {
+app.get("/FilterACategoryData", async (req, res) => {
     try {
         //receiving the category we are searching via link
         const whichCategory = req.query.Acategory;
+
         if (whichCategory == "All") {
             const AllData = await SlideModel.find();
             console.log('AllData-- ', AllData);
@@ -110,7 +117,8 @@ app.get("/CategoryData", async (req, res) => {
                     categorydata: (AllData)
                 })
             } else { res.status(400).json({ message: "data not found" }) }
-        } else {
+        }
+        else {
             // finding data according to filters
             const Data = await SlideModel.find(
                 {
@@ -136,10 +144,12 @@ app.get("/CategoryData", async (req, res) => {
     }
     catch (error) {
         console.log('/CategoryData- ', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+
     }
 })
 
-// Getting slide data using id API- ********************************************************-Getting slide data using id API
+// Getting slide data using id API- ***********
 app.get("/AutoSlider/:id", async (req, res) => {
     try {
         const _id = req.params.id
@@ -148,71 +158,195 @@ app.get("/AutoSlider/:id", async (req, res) => {
 
     } catch (error) {
         console.log('/AutoSlider/:id- ', error);
+        res.status(500).json({ error: 'Internal Server Error' });
 
     }
 })
 
-// Posting likes slides id , API- ********************************************************- Posting likes slides id , API
+
+// -------------------------------------------------> API FOR LIKES (START) ------------------------------------------------------------------->
 
 app.post("/storeLikes", async (req, res) => {
     try {
-        const { id } = req.body;
-        const isIdAvailable = await LikeModel.findOne({ slideid: id });
-        if (isIdAvailable) {
-            console.log('isIdAvailable:- yes id available');
+        // instead of slide id we nee user id to srore all user who liked the slide
+        const { id, username_from_sl } = req.body;
+        // console.log('id,username_from_sl:- ', id, username_from_sl);
+
+        // Check if the user is already in aslidelikearry
+        const matchingUser = await SlideModel.findOne({
+            "aslidelikearry": { $elemMatch: { username: username_from_sl } }
+        });
+
+        if (matchingUser) {
+            console.log('matchingUser:- yes matchingUser available');
             return res.status(400).json({
-                message: "slide_id already saved in DB"
-            })
+                message: "matchingUser saved in DB"
+            });
+        } else {
+            //adding
+            await SlideModel.updateOne({}, { $push: { "aslidelikearry": { username: username_from_sl } } });
+            console.log('SlideModel - Id added successfully');
         }
 
-        const newlikeid = new LikeModel({ slideid: id });
-        newlikeid.save();
-        console.log('liked slide _id stored');
-        res.status(200).json({ message: "likes slide id stored" })
+        // ******++++++++++++***********
+        const username = username_from_sl;
+
+        // Find the user by username
+        const user = await UserModel.findOne({ username: username });
+
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found"
+            });
+        }
+
+        // Check if the id is already in likedslide
+        const is_slideID_AVL_in_myArray = user.likedslide.some(obj => obj.id === id);
+
+        if (is_slideID_AVL_in_myArray) {
+            console.log('is_slideID_AVL_in_myArray:- yes id available');
+            return res.status(400).json({
+                message: "slide_id already saved in userdetails DB"
+            });
+        } else {
+            user.likedslide.push({ id: id });
+            await user.save();
+            console.log('UserModel - Id added successfully');
+            return res.json({ foundInUserDetails: false, addedInUserDetails: true });
+        }
     } catch (error) {
         console.log('/storeLikes- ', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
-})
-// Getting all likes slide's id  , API- ********************************************************-  Getting all likes slide's id  
+});
 
-app.get("/getAllLikes", async (req, res) => {
+
+
+
+// delete liked slide id from DB , API- ************
+app.delete("/delete", async (req, res) => {
     try {
-        const likesarray = await LikeModel.find();
-        res.status(200).json({
-            message: "All likes id are in this array",
-            likesarray: likesarray
-        })
-    } catch (error) {
-        console.log('/getAllLikes- ', error);
-    }
-})
+        const { id, username_from_sl } = req.body;
 
-// delete liked slide id from DB , API- ********************************************************-  Getting all likes slide's id 
+        // Update the document to remove the object with the specified id from aslidelikearry
+        await SlideModel.updateOne(
+            {},
+            { $pull: { "aslidelikearry": { username: username_from_sl } } }
+        );
 
-app.delete("/delete/:id", async (req, res) => {
-    try {
-        const deleid = req.params.id;
 
-        await LikeModel.findOneAndDelete({ slideid: deleid });
+        //delete from user like array
+        await UserModel.updateOne({ username: username_from_sl }, { $pull: { "likedslide": { id: id } } });
 
         res.status(200).json({
             message: "slide id is  deleted from likeslide db"
         });
 
-        console.log(deleid);
     } catch (error) {
         console.log('/delete/:id:- ', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
 
-// ********************************************************************
+// Getting all likes slide's id  , API- **************
 
+app.get("/getLikesArray", async (req, res) => {
+    try {
+        const likesarray = await SlideModel.find({}, { aslidelikearry: 1, _id: 0 });
+        return res.send(likesarray);
+    } catch (error) {
+        console.log('/getAllLikes- ', error);
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// -------------------------------------------------> API FOR LIKES (END) ------------------------------------------------->
+
+//------------------------------------------------------------------->  USER BookMark (START)  ------------------------------------------------------> */
+
+app.post("/saveBookmark", async (req, res) => {
+    try {
+        const { id, username_from_sl } = req.body;
+        console.log("slide id and username getting from frontend:- ", id, username_from_sl);
+
+        const username = username_from_sl;
+
+        // Find the user by username
+        const user = await UserModel.findOne({ username: username });
+
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found"
+            });
+        }
+
+        // Check if the id is already in bookmarkedslide
+        const is_slideID_AVL_in_bookmarkedslide = user.bookmarkedslide.some(obj => obj.id === id);
+
+        if (is_slideID_AVL_in_bookmarkedslide) {
+            // Remove the object with the specified id from bookmarkedslide
+            await UserModel.updateOne({ username: username }, { $pull: { "bookmarkedslide": { id: id } } });
+            await user.save();
+            console.log('is_slideID_AVL_in_bookmarkedslide: Yes, id removed from bookmarkedslide array');
+            return res.status(200).json({ foundslideId: true, removedslideId: true });
+        } else {
+            user.bookmarkedslide.push({ id: id });
+            await user.save();
+            console.log('UserModel - bookmarkedslide added successfully');
+            return res.status(200).json({ foundslideId: false, addedslideId: true });
+        }
+
+    } catch (error) {
+        console.log('saveBookmark error:- ', error);
+        return res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// ******************* GET ALL BOOKMARKS FOR 
+app.get("/getAllBookmarks/:id/:username", async (req, res) => {
+    try {
+        const { id, username } = req.params;
+
+        // Find the user by username
+        const user = await UserModel.findOne({ username: username });
+
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found"
+            });
+        }
+
+        // Check if the id  is present in bookmarkedslide
+        const isObjectIdPresent = user.bookmarkedslide.some(obj => obj.id === id);
+
+        if (isObjectIdPresent) {
+            return res.status(200).json({
+                message: "Object with id   is present in bookmarkedslide array",
+                isObjectIdPresent: true
+            });
+        } else {
+            return res.status(200).json({
+                message: "Object with id is not present in bookmarkedslide array",
+                isObjectIdPresent: false
+            });
+        }
+
+    } catch (error) {
+        console.log('getAllBookmarks error:- ', error);
+        return res.status(500).send({ error: 'Internal Server Error' });
+    }
+})
+
+
+//------------------------------------------------------------------->  USER BookMark (END)  ------------------------------------------------------> */
 app.listen(PORT, async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URL)
         console.log(`Server successfully running on ${process.env.PORT}`);
     } catch (error) {
         console.error("app.listen error", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+
     }
 })

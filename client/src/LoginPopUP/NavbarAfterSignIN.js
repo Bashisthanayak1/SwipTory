@@ -199,7 +199,7 @@ const NavbarAfterSignIN = (props) => {
                 //closing the addstory box
                 setOpenAddStory((pre) => !pre)
                 //closing the popup when  we post
-                setshouldShowInfo((pre) => !pre)
+                setshouldShowInfo((pre) => false)
                 toast.success('Successfully added', {
                     position: "top-right",
                     autoClose: 1000,
@@ -222,7 +222,7 @@ const NavbarAfterSignIN = (props) => {
 
     return (
         <div className='AfterSignIN--div'>
-            <button className='Bookmarks--button'><i class="fa-solid fa-bookmark"></i> Bookmarks</button>
+            <button className='Bookmarks--button'><i className="fa-solid fa-bookmark"></i> Bookmarks</button>
             <button id='Addstory--button' onClick={ClickAddStory}>Add story</button>
             <img className='user__profile_photo' src="https://media.istockphoto.com/id/1268548918/vector/white-create-account-screen-icon-isolated-with-long-shadow-red-circle-button-vector.jpg?s=612x612&w=0&k=20&c=tyaWWtW2_yQyvK4hBnVXEt3tfSNr0jVC_6P7XbOBrbk=" alt="" />
 
@@ -234,7 +234,7 @@ const NavbarAfterSignIN = (props) => {
                 <img className='user__profile_photo_smallSCR' src="https://media.istockphoto.com/id/1268548918/vector/white-create-account-screen-icon-isolated-with-long-shadow-red-circle-button-vector.jpg?s=612x612&w=0&k=20&c=tyaWWtW2_yQyvK4hBnVXEt3tfSNr0jVC_6P7XbOBrbk=" alt="" />
                 <h4>{props.username}</h4>
                 <button type="button" className='Three_hidden_button' >Your Story</button>
-                <button type="button" className='Three_hidden_button'><i class="fa-solid fa-bookmark"></i> Bookmarks</button>
+                <button type="button" className='Three_hidden_button'><i className="fa-solid fa-bookmark"></i> Bookmarks</button>
                 <button type="button" className='Three_hidden_button' onClick={ClickAddStory}>Add story</button>
                 <button type="button" id='Logout--button' onClick={ClickLogout}>Logout</button>
             </div>

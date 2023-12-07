@@ -1,7 +1,6 @@
 
 const mongoose = require('mongoose');
 const slideSchema = new mongoose.Schema({
-
     aslide: [
         {
             Your_heading: { type: String, required: true },
@@ -10,8 +9,8 @@ const slideSchema = new mongoose.Schema({
             Select_category: { type: String, required: true },
         }
     ],
-    aslidelikearry: []
-
+    aslidelikearry:[]
+   
 });
 
 const SlideModel = mongoose.model('slidedetails', slideSchema);

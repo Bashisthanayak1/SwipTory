@@ -12,7 +12,7 @@ const Foodpage = () => {
     useEffect(() => {
         async function foodFunction() {
             try {
-                const foodData = await axios.get(`http://localhost:8000/CategoryData?Acategory=food`);
+                const foodData = await axios.get(`http://localhost:8000/FilterACategoryData?Acategory=food`);
                 // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
 
@@ -53,15 +53,6 @@ const Foodpage = () => {
         //Navigate to slide page
         Navigate(`/AutoSlider/${clickedArray_of_obj_id}`)
 
-
-
-
-
-
-        // // Convert the array to a string for the URL
-        // const slicedArrayString = encodeURIComponent(JSON.stringify(SLCAR));
-        // // Navigate to AutoSlider with query parameter
-        // Navigate(`/AutoSlider?slicedArray=${slicedArrayString}`);
     }
 
     return (

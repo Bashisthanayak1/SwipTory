@@ -21,7 +21,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (Username_from_sessionStorage) {
-      console.log('Is_UserName_saved- ', isNameSaves);
+      // console.log('Is_UserName_saved- ', isNameSaves);
       setnamesaves(true);
 
     }

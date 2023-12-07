@@ -12,10 +12,14 @@ import axios from 'axios';
 
 const AutoSlider = (props) => {
     const Navigate = useNavigate();
-    const [isBookMarkClicked, setIsBookMarkClicked] = useState(false);
+
+    // getting user Username from SS for a simple check is user logged in or not
+
+    const username_from_sl = sessionStorage.getItem("username");
+    const [AddBlueBookMark, setAddBlueBookMark] = useState(false);
     const [images, setImages] = useState([{ Add_Image_URL: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/b6e0b072897469.5bf6e79950d23.gif", Select_category: "food", Story_Description: "food", Your_heading: "food", }, { Add_Image_URL: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/b6e0b072897469.5bf6e79950d23.gif", Select_category: "food", Story_Description: "food", Your_heading: "food", }, { Add_Image_URL: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/b6e0b072897469.5bf6e79950d23.gif", Select_category: "food", Story_Description: "food", Your_heading: "food", }])
     const [likesarray, setLikesarray] = useState([])
-    const [islikeIdMAtched, setIslikeIdMAtched] = useState(false)
+    const [isloggedinUserLikedOpenedSlide, setisloggedinUserLikedOpenedSlide] = useState(false)
     const [addRedheart, setAddRedheart] = useState(false)
     // *****************************************************************************************************//
 
@@ -30,33 +34,37 @@ const AutoSlider = (props) => {
 
     const clickHeart = useCallback(async () => {
         console.log('heart clicked');
+        console.log('isloggedinUserLikedOpenedSlide:- ', isloggedinUserLikedOpenedSlide);
         try {
-            if (islikeIdMAtched) {
-                await axios.delete(`http://localhost:8000/delete/${id}`);
-                console.log('double clicked like  slide id removed ');
+            if (isloggedinUserLikedOpenedSlide) {
+                await axios.delete("http://localhost:8000/delete", { data: { id, username_from_sl } });
+                console.log('double clicked like  removed ');
                 setAddRedheart(false);
-                setIslikeIdMAtched(false);
+                setisloggedinUserLikedOpenedSlide(false);
             } else {
-                await axios.post("http://localhost:8000/storeLikes", { id });
-                console.log('like clicked slide id stored');
+                await axios.post("http://localhost:8000/storeLikes", { id, username_from_sl });
+                console.log('like  stored');
                 setAddRedheart(true);
-                setIslikeIdMAtched(true);
+                setisloggedinUserLikedOpenedSlide(true);
             }
         } catch (error) {
             console.log("clickHeart error- ", error);
         }
-    }, [islikeIdMAtched, id]);
+
+    }, [isloggedinUserLikedOpenedSlide, id, username_from_sl]);
 
     // *****************************************************************************************************//
 
 
     useEffect(() => {
+        console.log('Logged user userId: -', username_from_sl);
 
+        // getting the slider array by the id ,getting from URL
         async function dataFromId() {
             try {
                 let slideData = await axios.get(`http://localhost:8000/AutoSlider/${id}`)
+                console.log('slideData_from_id - ', slideData.data[0].aslide);
                 setImages(slideData.data[0].aslide)
-                // console.log('slideData_from_id - ', slideData.data[0].aslide);
             } catch (error) {
                 console.log("dataFromId error:- ", error)
             }
@@ -65,37 +73,36 @@ const AutoSlider = (props) => {
         // ***********
         async function gettingLikeArray() {
             try {
-                const LikeArray = await axios.get("http://localhost:8000/getAllLikes");
+                const Likedata = await axios.get("http://localhost:8000/getLikesArray");
+                const LikeArray = await Likedata.data[0].aslidelikearry;
+                console.log('LikeArray:- ', LikeArray);
                 //getting full likes array for setting likes count
-                setLikesarray(LikeArray.data.likesarray)
-                //to check if the opened slide id is saved in likes array or  not
-                const ismatched = await LikeArray.data.likesarray.some(obj => obj.slideid === id)
+                setLikesarray(LikeArray)
+                //to check if the logged in user liked the  opened slide  or  not
+                const isCurrentUserLiked = await LikeArray.some(obj => obj.username === username_from_sl)
 
-                if (ismatched) {
-                    console.log('ismatched:- ', ismatched);
-                    setIslikeIdMAtched(ismatched)
+                if (isCurrentUserLiked) {
+                    console.log('isCurrentUserLiked:- ', isCurrentUserLiked);
+                    setisloggedinUserLikedOpenedSlide(isCurrentUserLiked)
                     setAddRedheart(true)
                 } else {
-                    console.log('ismatched:- ', ismatched);
-                    setIslikeIdMAtched(false)
+                    console.log('isCurrentUserLiked:- ', isCurrentUserLiked);
+                    setisloggedinUserLikedOpenedSlide(false)
                     setAddRedheart(false)
                 }
 
                 //printing full likes array 
-                console.log("LikeArray:- ", LikeArray.data.likesarray);
             } catch (error) {
-                console.error("gettingLikeArray error:- ", error)
+                console.error("getLikesArray error:- ", error)
             }
         }
 
-
         dataFromId();
         gettingLikeArray();
+    }, [id, setImages, clickHeart, username_from_sl])
 
-    }, [id, setImages, clickHeart])
 
     // *****************************************************************************************************//
-
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progressWidths, setProgressWidths] = useState(
         images.map(() => '0%')
@@ -170,11 +177,45 @@ const AutoSlider = (props) => {
     // *****************************************************************************************************//
 
     //clickBookmark
-    function clickBookmark() {
+    async function clickBookmark() {
         console.log('BookMarkClicked');
-        setIsBookMarkClicked((pre) => !pre)
+        try {
+            const successfully_bookMark_added = await axios.post("http://localhost:8000/saveBookmark", { id, username_from_sl });
+            console.log('successfully_bookMark_added or not :- ', successfully_bookMark_added.data.addedslideId);
+            if (successfully_bookMark_added.data.addedslideId) {
+                setAddBlueBookMark((pre) => true)
+            } else {
+                setAddBlueBookMark((pre) => false)
+            }
+
+        } catch (error) {
+            console.log('clickBookmark api error:- ', error);
+        }
     }
+
     // *****************************************************************************************************//
+    useEffect(() => {
+        async function isBookamrkAvailable() {
+            try {
+                const username = username_from_sl;
+                const response = await axios.get(`http://localhost:8000/getAllBookmarks/${id}/${username}`);
+                const BookmarkPresent = response.data.isObjectIdPresent
+                console.log('IsBookMarkPresent:- ', BookmarkPresent);
+
+                if (BookmarkPresent) {
+                    setAddBlueBookMark(true)
+                } else {
+                    setAddBlueBookMark(false)
+                }
+
+            } catch (error) {
+                console.log('isBookamrkAvailable error-: ', error);
+            }
+        }
+        isBookamrkAvailable();
+    }, [id, username_from_sl])
+    // *****************************************************************************************************//
+
 
     return (
         <>
@@ -187,7 +228,7 @@ const AutoSlider = (props) => {
                     <div className="slider-container">
 
                         <p className='X--for--close--autoSlider' onClick={autoSliderX}>X</p>
-                        <i class="fa-solid fa-paper-plane" onClick={clickForCopy}></i>
+                        <i className="fa-solid fa-paper-plane" onClick={clickForCopy}></i>
 
                         <div className="slider" style={{
                             transform: `translateX(-${currentIndex * 100}%)`, transition: `transform 0.5s ease-in-out`
@@ -210,11 +251,11 @@ const AutoSlider = (props) => {
                         </div>
 
                         <div className="controls">
-                            <button onClick={prevSlide}><i class="fa-solid fa-chevron-left"></i></button>
-                            <button onClick={nextSlide}><i class="fa-solid fa-chevron-right"></i></button>
+                            <button onClick={prevSlide}><i className="fa-solid fa-chevron-left"></i></button>
+                            <button onClick={nextSlide}><i className="fa-solid fa-chevron-right"></i></button>
                         </div>
 
-                        <img src={(isBookMarkClicked) ? BlueBoobkMark : WhiteBoobkMark} alt="Bookmark" id="AutoSlider--bookmark" onClick={clickBookmark} />
+                        <img src={(AddBlueBookMark) ? BlueBoobkMark : WhiteBoobkMark} alt="Bookmark" id="AutoSlider--bookmark" onClick={clickBookmark} />
 
                         <div id="HearatIcon--div">
                             <img src={(addRedheart) ? Redheart : Whiteheart} alt="Heart" className='heartIcon' onClick={clickHeart} />
