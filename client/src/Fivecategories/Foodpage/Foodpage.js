@@ -8,7 +8,26 @@ const Foodpage = () => {
     let Navigate = useNavigate();
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
-    //C:\Users\bashi\SwipTory\client
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+        // Set initial window width
+        setWindowWidth(window.innerWidth);
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []); // Empty dependency array ensures that this effect runs only once after the initial render
+
+
     useEffect(() => {
         async function foodFunction() {
             try {
@@ -66,7 +85,7 @@ const Foodpage = () => {
                     divTOprint()
                 }
             </div>
-            {foodArray.length >= 4 && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
+            {(foodArray.length > 4 || windowWidth < 1230) && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
 
         </>
     );

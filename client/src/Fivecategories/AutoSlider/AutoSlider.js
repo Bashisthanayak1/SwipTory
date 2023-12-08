@@ -9,18 +9,20 @@ import WhiteBoobkMark from "../../SVG/bookmark_solidwhite.svg"
 import Redheart from "../../SVG/heart-solidRed.svg"
 import Whiteheart from "../../SVG/heart-solid_White.svg"
 import axios from 'axios';
+import Login from '../../LoginPopUP/LoginPopUp';
 
 const AutoSlider = (props) => {
     const Navigate = useNavigate();
 
     // getting user Username from SS for a simple check is user logged in or not
-
     const username_from_sl = sessionStorage.getItem("username");
+
     const [AddBlueBookMark, setAddBlueBookMark] = useState(false);
     const [images, setImages] = useState([{ Add_Image_URL: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/b6e0b072897469.5bf6e79950d23.gif", Select_category: "food", Story_Description: "food", Your_heading: "food", }, { Add_Image_URL: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/b6e0b072897469.5bf6e79950d23.gif", Select_category: "food", Story_Description: "food", Your_heading: "food", }, { Add_Image_URL: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/b6e0b072897469.5bf6e79950d23.gif", Select_category: "food", Story_Description: "food", Your_heading: "food", }])
     const [likesarray, setLikesarray] = useState([])
     const [isloggedinUserLikedOpenedSlide, setisloggedinUserLikedOpenedSlide] = useState(false)
     const [addRedheart, setAddRedheart] = useState(false)
+    const [IsSignInClicked, setSignInClicked] = useState(false)
     // *****************************************************************************************************//
 
     //acessing the id we are getting from URL
@@ -33,6 +35,10 @@ const AutoSlider = (props) => {
     // click heart icon for like
 
     const clickHeart = useCallback(async () => {
+        if (!username_from_sl) {
+            console.log('loggin first');
+            setSignInClicked(true)
+        }
         console.log('heart clicked');
         console.log('isloggedinUserLikedOpenedSlide:- ', isloggedinUserLikedOpenedSlide);
         try {
@@ -57,7 +63,7 @@ const AutoSlider = (props) => {
 
 
     useEffect(() => {
-        console.log('Logged user userId: -', username_from_sl);
+        // console.log('Logged user userId: -', username_from_sl);
 
         // getting the slider array by the id ,getting from URL
         async function dataFromId() {
@@ -75,18 +81,18 @@ const AutoSlider = (props) => {
             try {
                 const Likedata = await axios.get("http://localhost:8000/getLikesArray");
                 const LikeArray = await Likedata.data[0].aslidelikearry;
-                console.log('LikeArray:- ', LikeArray);
+                // console.log('LikeArray:- ', LikeArray);
                 //getting full likes array for setting likes count
                 setLikesarray(LikeArray)
                 //to check if the logged in user liked the  opened slide  or  not
-                const isCurrentUserLiked = await LikeArray.some(obj => obj.username === username_from_sl)
+                const isCurrentUserAlreadyLiked = await LikeArray.some(obj => obj.username === username_from_sl)
 
-                if (isCurrentUserLiked) {
-                    console.log('isCurrentUserLiked:- ', isCurrentUserLiked);
-                    setisloggedinUserLikedOpenedSlide(isCurrentUserLiked)
+                if (isCurrentUserAlreadyLiked && username_from_sl) {
+                    console.log('isCurrentUserAlreadyLiked:- ', isCurrentUserAlreadyLiked);
+                    setisloggedinUserLikedOpenedSlide(isCurrentUserAlreadyLiked)
                     setAddRedheart(true)
                 } else {
-                    console.log('isCurrentUserLiked:- ', isCurrentUserLiked);
+                    // console.log('isCurrentUserLiked:- ', isCurrentUserLiked);
                     setisloggedinUserLikedOpenedSlide(false)
                     setAddRedheart(false)
                 }
@@ -178,6 +184,10 @@ const AutoSlider = (props) => {
 
     //clickBookmark
     async function clickBookmark() {
+        // if (!username_from_sl) {
+        //     console.log('loggin first');
+        //     Navigate("/")
+        // }
         console.log('BookMarkClicked');
         try {
             const successfully_bookMark_added = await axios.post("http://localhost:8000/saveBookmark", { id, username_from_sl });
@@ -195,14 +205,20 @@ const AutoSlider = (props) => {
 
     // *****************************************************************************************************//
     useEffect(() => {
+        // if (!username_from_sl) {
+        //     console.log('loggin first');
+        //     Navigate("/")
+        // }
         async function isBookamrkAvailable() {
             try {
                 const username = username_from_sl;
+                //sending id and user name to check if openedslide bookmarked or not
                 const response = await axios.get(`http://localhost:8000/getAllBookmarks/${id}/${username}`);
                 const BookmarkPresent = response.data.isObjectIdPresent
-                console.log('IsBookMarkPresent:- ', BookmarkPresent);
+                // console.log('IsBookMarkPresent:- ', BookmarkPresent);
 
                 if (BookmarkPresent) {
+                    // if already stored add blue color
                     setAddBlueBookMark(true)
                 } else {
                     setAddBlueBookMark(false)
@@ -213,12 +229,13 @@ const AutoSlider = (props) => {
             }
         }
         isBookamrkAvailable();
-    }, [id, username_from_sl])
+    }, [id, username_from_sl, Navigate])
     // *****************************************************************************************************//
 
 
     return (
         <>
+            {IsSignInClicked && <Login setSignInClicked={setSignInClicked} />}
             <Navbar className="navbar--in--AUtoSlider" />
             <ToastContainer />
 
@@ -267,6 +284,8 @@ const AutoSlider = (props) => {
                 </div>
 
             </div>
+
+
         </>
     );
 };

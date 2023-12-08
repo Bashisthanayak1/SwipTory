@@ -88,7 +88,8 @@ const Login = (props) => {
 
         <>
             <ToastContainer />
-            {closeLogin &&
+            {
+                closeLogin &&
                 <div className='register--divs--container'>
                     <div className='register--div' >
                         <div className='Cross--for--close' onClick={CrossSign}>x</div>
@@ -104,7 +105,8 @@ const Login = (props) => {
                             <input type="submit" value="login" id='PopUp--register--Button' />
                         </form>
                     </div >
-                </div >}
+                </div >
+            }
 
         </>
 

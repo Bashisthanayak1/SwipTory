@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NavbarAfterSignIN = (props) => {
+
     const [shouldShowInfo, setshouldShowInfo] = useState(false)
     //addstory popUp state
     const [openAddStory, setOpenAddStory] = useState(false)

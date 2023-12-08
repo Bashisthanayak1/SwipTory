@@ -5,17 +5,17 @@ body {
   font-family: DM Sans, sans-serif;
 }
 .Food--page--container {
-  /* border: 1px solid blue; */
-  margin-top: 40px;
-  padding-bottom: 10px;
-  height: 500px;
+  border: 1px solid blue;
+  margin: 30px auto;
+  padding-bottom: 20px;
+  text-align: center;
 }
 
 .About--food--h1 {
   margin-top: 25px;
   text-align: center;
 }
-.No--stories--h3{
+.No--stories--h3 {
   text-align: center;
 }
 .Food--page--container > h3 {
@@ -26,13 +26,12 @@ body {
 .DIv--OfA--slide {
   display: inline-block;
   border: 2px solid red;
-  width: 280px;
+  width: 299px;
   height: 420px;
-  margin-top: 5px;
   border-radius: 23px;
   background-color: black;
   cursor: pointer;
-  margin-left: 10px;
+  margin: 5px 0px 0px 10px;
   position: relative;
 }
 .DIv--OfA--slide > img {
@@ -59,15 +58,17 @@ body {
 .DIv--OfA--slide > h2 {
   bottom: 0;
   bottom: 2%;
+  text-align: left;
 }
 .showmore--button:hover {
   transform: scale(1.1);
 }
 .showmore--button {
-  margin-top: 18px;
+  display: block;
+  margin: 18px auto;
   background-color: rgb(255, 115, 115);
   color: white;
-  padding: 1% 4%;
+  padding: 0.6% 2.3%;
   border-radius: 20px;
   border-color: transparent;
   cursor: pointer;

@@ -304,6 +304,7 @@ app.post("/saveBookmark", async (req, res) => {
 });
 
 // ******************* GET ALL BOOKMARKS FOR 
+
 app.get("/getAllBookmarks/:id/:username", async (req, res) => {
     try {
         const { id, username } = req.params;
