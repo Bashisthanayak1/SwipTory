@@ -41,7 +41,7 @@ const Foodpage = () => {
         }
         foodFunction();
     }, []);
-    console.log('foodData:- ', foodArray);
+    // console.log('foodData:- ', foodArray);
 
 
     let arr = [];

@@ -37,18 +37,19 @@ const AutoSlider = (props) => {
     const clickHeart = useCallback(async () => {
         if (!username_from_sl) {
             console.log('loggin first');
-            setSignInClicked(true)
+            return setSignInClicked(true)
         }
         console.log('heart clicked');
         console.log('isloggedinUserLikedOpenedSlide:- ', isloggedinUserLikedOpenedSlide);
         try {
             if (isloggedinUserLikedOpenedSlide) {
-                await axios.delete("http://localhost:8000/delete", { data: { id, username_from_sl } });
-                console.log('double clicked like  removed ');
+                const Deleteresponse = await axios.delete("http://localhost:8000/delete", { data: { id, username_from_sl } });
+                console.log('clickHeart Deleteresponse:- ', Deleteresponse);
                 setAddRedheart(false);
                 setisloggedinUserLikedOpenedSlide(false);
             } else {
-                await axios.post("http://localhost:8000/storeLikes", { id, username_from_sl });
+                const StoreResponse = await axios.post("http://localhost:8000/storeLikes", { id, username_from_sl });
+                console.log('clickHeart StoreResponse:- ', StoreResponse);
                 console.log('like  stored');
                 setAddRedheart(true);
                 setisloggedinUserLikedOpenedSlide(true);
@@ -63,33 +64,20 @@ const AutoSlider = (props) => {
 
 
     useEffect(() => {
-        // console.log('Logged user userId: -', username_from_sl);
-
         // getting the slider array by the id ,getting from URL
         async function dataFromId() {
             try {
                 let slideData = await axios.get(`http://localhost:8000/AutoSlider/${id}`)
-                console.log('slideData_from_id - ', slideData.data[0].aslide);
                 setImages(slideData.data[0].aslide)
-            } catch (error) {
-                console.log("dataFromId error:- ", error)
-            }
-        }
-
-        // ***********
-        async function gettingLikeArray() {
-            try {
-                const Likedata = await axios.get("http://localhost:8000/getLikesArray");
-                const LikeArray = await Likedata.data[0].aslidelikearry;
-                // console.log('LikeArray:- ', LikeArray);
+                // console.log('slideData_from_id - ', slideData);
+                const LikeArray = await slideData.data[0].aslidelikearry;
                 //getting full likes array for setting likes count
                 setLikesarray(LikeArray)
+
                 //to check if the logged in user liked the  opened slide  or  not
                 const isCurrentUserAlreadyLiked = await LikeArray.some(obj => obj.username === username_from_sl)
-
                 if (isCurrentUserAlreadyLiked && username_from_sl) {
-                    console.log('isCurrentUserAlreadyLiked:- ', isCurrentUserAlreadyLiked);
-                    setisloggedinUserLikedOpenedSlide(isCurrentUserAlreadyLiked)
+                    setisloggedinUserLikedOpenedSlide(true)
                     setAddRedheart(true)
                 } else {
                     // console.log('isCurrentUserLiked:- ', isCurrentUserLiked);
@@ -97,14 +85,12 @@ const AutoSlider = (props) => {
                     setAddRedheart(false)
                 }
 
-                //printing full likes array 
             } catch (error) {
-                console.error("getLikesArray error:- ", error)
+                console.log("dataFromId error:- ", error)
             }
         }
 
         dataFromId();
-        gettingLikeArray();
     }, [id, setImages, clickHeart, username_from_sl])
 
 
@@ -184,10 +170,6 @@ const AutoSlider = (props) => {
 
     //clickBookmark
     async function clickBookmark() {
-        // if (!username_from_sl) {
-        //     console.log('loggin first');
-        //     Navigate("/")
-        // }
         console.log('BookMarkClicked');
         try {
             const successfully_bookMark_added = await axios.post("http://localhost:8000/saveBookmark", { id, username_from_sl });

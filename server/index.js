@@ -170,27 +170,30 @@ app.post("/storeLikes", async (req, res) => {
     try {
         // instead of slide id we nee user id to srore all user who liked the slide
         const { id, username_from_sl } = req.body;
-        // console.log('id,username_from_sl:- ', id, username_from_sl);
+        console.log('id,username_from_sl:- ', id, username_from_sl);
 
-        // Check if the user is already in aslidelikearry
-        const matchingUser = await SlideModel.findOne({
-            "aslidelikearry": { $elemMatch: { username: username_from_sl } }
-        });
+        // getting the fyll slide by id
+        const FullSlide = await SlideModel.findOne({ _id: id });
+        console.log('matchingUser', FullSlide.aslidelikearry);
 
-        if (matchingUser) {
-            console.log('matchingUser:- yes matchingUser available');
-            return res.status(400).json({
-                message: "matchingUser saved in DB"
-            });
+        if (FullSlide.aslidelikearry.length > 0) {
+            const IsUserNameFound = await FullSlide.aslidelikearry.some(obj => obj.username === username_from_sl);
+            if (IsUserNameFound) {
+                return res.status(400).json({ foundInUsername: true, addedInUsername: false });
+            } else {
+                await FullSlide.aslidelikearry.push({ username: username_from_sl });
+                await FullSlide.save();
+                console.log('SlideModel - username added successfully');
+            }
         } else {
-            //adding
-            await SlideModel.updateOne({}, { $push: { "aslidelikearry": { username: username_from_sl } } });
-            console.log('SlideModel - Id added successfully');
+            await FullSlide.aslidelikearry.push({ username: username_from_sl });
+            await FullSlide.save();
+            console.log('SlideModel - username added successfully');
         }
+
 
         // ******++++++++++++***********
         const username = username_from_sl;
-
         // Find the user by username
         const user = await UserModel.findOne({ username: username });
 
@@ -221,45 +224,29 @@ app.post("/storeLikes", async (req, res) => {
 });
 
 
-
-
 // delete liked slide id from DB , API- ************
+
 app.delete("/delete", async (req, res) => {
     try {
         const { id, username_from_sl } = req.body;
+        console.log('/delete:- ', id, username_from_sl);
 
-        // Update the document to remove the object with the specified id from aslidelikearry
-        await SlideModel.updateOne(
-            {},
-            { $pull: { "aslidelikearry": { username: username_from_sl } } }
-        );
+        //delete from slide like array
+        await SlideModel.updateOne({ _id: id }, { $pull: { "aslidelikearry": { username: username_from_sl } } });
 
-
-        //delete from user like array
+        //delete from user like array 
         await UserModel.updateOne({ username: username_from_sl }, { $pull: { "likedslide": { id: id } } });
 
         res.status(200).json({
-            message: "slide id is  deleted from likeslide db"
+            message: "slide id is  deleted from both db"
         });
 
     } catch (error) {
         console.log('/delete/:id:- ', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: '/delete Error' });
     }
 });
 
-
-// Getting all likes slide's id  , API- **************
-
-app.get("/getLikesArray", async (req, res) => {
-    try {
-        const likesarray = await SlideModel.find({}, { aslidelikearry: 1, _id: 0 });
-        return res.send(likesarray);
-    } catch (error) {
-        console.log('/getAllLikes- ', error);
-        res.status(500).send({ error: 'Internal Server Error' });
-    }
-});
 
 // -------------------------------------------------> API FOR LIKES (END) ------------------------------------------------->
 
