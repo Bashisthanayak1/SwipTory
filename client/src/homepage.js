@@ -2,7 +2,10 @@ import React from 'react'
 import Navbar from './PagesJS/Navbar/navbar'
 import Stories from './PagesJS/Stories/stories'
 import FoodPage from "./Fivecategories/Foodpage/Foodpage.js"
-// import HealthFitness from './5category/healthFitnesspage/HealthFitness.js'
+import Healthpage from './Fivecategories/healthFitnesspage/HealthFitness.js'
+import Travelpage from './Fivecategories/travelpage/TravelPage.js'
+import Moviepage from './Fivecategories/moviepage/Moviepage.js'
+import Educationpage from './Fivecategories/educationPage/Educationpage.js'
 
 const homepage = () => {
     return (
@@ -10,7 +13,10 @@ const homepage = () => {
             <Navbar />
             <Stories />
             <FoodPage />
-            {/* <HealthFitness /> */}
+            <Healthpage />
+            <Travelpage />
+            < Moviepage />
+            <Educationpage />
         </div>
     )
 }

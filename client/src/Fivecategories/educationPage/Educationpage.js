@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import '../Foodpage/FoodPage.css';
 import axios from 'axios';
 
-const Healthpage = () => {
+const Educationpage = () => {
     let Navigate = useNavigate();
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
@@ -31,7 +31,7 @@ const Healthpage = () => {
     useEffect(() => {
         async function foodFunction() {
             try {
-                const foodData = await axios.get(`http://localhost:8000/FilterACategoryData?Acategory=health and fitness`);
+                const foodData = await axios.get(`http://localhost:8000/FilterACategoryData?Acategory=education`);
                 // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
 
@@ -78,7 +78,7 @@ const Healthpage = () => {
         <>
             <div className='Food--page--container' style={{ overflow: showMoreClicked ? 'visible' : 'hidden', height: showMoreClicked ? 'auto' : '500px' }}>
 
-                <h1 className='About--food--h1'>Top Stories About health and fitness</h1>
+                <h1 className='About--food--h1'>Top Stories About education</h1>
                 {(!foodArray.length >= 1) && <h3 className='No--stories--h3'>No stories Available</h3>}
 
                 {foodArray.length >= 1 &&
@@ -91,4 +91,4 @@ const Healthpage = () => {
     );
 };
 
-export default Healthpage;
+export default Educationpage;

@@ -85,7 +85,7 @@ const Foodpage = () => {
                     divTOprint()
                 }
             </div>
-            {(foodArray.length > 4 || windowWidth < 1230) && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
+            {(foodArray.length > 4 || (foodArray.length > 4 && windowWidth < 1230)) && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
 
         </>
     );
