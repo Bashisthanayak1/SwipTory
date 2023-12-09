@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom"
 import '../Foodpage/FoodPage.css';
 import axios from 'axios';
 
+
+
 const Foodpage = () => {
     let Navigate = useNavigate();
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+
 
     const handleResize = () => {
         setWindowWidth(window.innerWidth);
@@ -86,7 +90,7 @@ const Foodpage = () => {
                 }
             </div>
             {(foodArray.length > 4 || (foodArray.length > 4 && windowWidth < 1230)) && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
-
+           
         </>
     );
 };

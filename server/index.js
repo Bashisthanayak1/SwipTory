@@ -111,12 +111,12 @@ app.get("/FilterACategoryData", async (req, res) => {
 
         if (whichCategory == "All") {
             const AllData = await SlideModel.find();
-            console.log('AllData-- ', AllData);
+            // console.log('AllData-- ', AllData);
             if (AllData) {
                 res.status(200).json({
                     categorydata: (AllData)
                 })
-            } else { res.status(400).json({ message: "data not found" }) }
+            } else { return res.status(400).json({ message: "data not found" }) }
         }
         else {
             // finding data according to filters
@@ -144,7 +144,7 @@ app.get("/FilterACategoryData", async (req, res) => {
     }
     catch (error) {
         console.log('/CategoryData- ', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' });
 
     }
 })
