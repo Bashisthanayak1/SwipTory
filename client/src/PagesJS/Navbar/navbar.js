@@ -4,9 +4,12 @@ import Mobilepagenavbar from './navbarForMobile.js'
 import Register from '../../RegisterPopUp/RegisterPopUp.js'
 import Login from "../../LoginPopUP/LoginPopUp.js"
 import NavbarAfterSignIN from '../../LoginPopUP/NavbarAfterSignIN.js'
+import { useNavigate } from 'react-router-dom'
 
 
 const Navbar = () => {
+  const Navigate = useNavigate();
+
   //usestate for Humberger icon
   const [IsHamburgerClicked, setIsHamburgerClicked] = useState(false);
   // usestate for registration button
@@ -49,12 +52,13 @@ const Navbar = () => {
   return (
     <div className='navbar--container'>
       <nav className='navbar'>
-        <h2>SwipTory</h2>
+        <h2 onClick={() => Navigate("/")}>SwipTory</h2>
         <div>
 
 
           {isNameSaves ?
-            <NavbarAfterSignIN username={Username_from_sessionStorage} setnamesaves={setnamesaves} /> :
+            <NavbarAfterSignIN username={Username_from_sessionStorage} setnamesaves={setnamesaves} />
+            :
             <>
               <button onClick={registerButton} className='Reg_Sig--Large--page'>Register Now</button>
               <button onClick={SignInButton} className='Reg_Sig--Large--page'>Sign In </button>
@@ -72,7 +76,6 @@ const Navbar = () => {
       {/* when i click the register button a register popUp will show */}
       {IsRegisterClicked && <Register setRegisterClicked={setRegisterClicked} />}
       {/* when i click the login/signin button a login  popUp will show */}
-      {/*  */}
       {IsSignInClicked && <Login setSignInClicked={setSignInClicked} />}
     </div>
   )

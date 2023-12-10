@@ -5,13 +5,11 @@ import '../Foodpage/FoodPage.css';
 import axios from 'axios';
 
 
-
 const Foodpage = () => {
     let Navigate = useNavigate();
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
 
 
     const handleResize = () => {
@@ -32,7 +30,7 @@ const Foodpage = () => {
     }, []); // Empty dependency array ensures that this effect runs only once after the initial render
 
 
-    useEffect(() => {
+    useEffect(() => { 
         async function foodFunction() {
             try {
                 const foodData = await axios.get(`http://localhost:8000/FilterACategoryData?Acategory=food`);
@@ -90,7 +88,7 @@ const Foodpage = () => {
                 }
             </div>
             {(foodArray.length > 4 || (foodArray.length > 4 && windowWidth < 1230)) && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
-           
+
         </>
     );
 };

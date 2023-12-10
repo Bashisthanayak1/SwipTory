@@ -47,7 +47,7 @@ app.post("/login", async (req, res) => {
         const Is_LoggedIn_User_Exists = await UserModel.findOne({ username });
         const Is_Password_Correct = await UserModel.findOne({ password });
 
-        console.log('Is_LoggedIn_User_Exists ', Is_LoggedIn_User_Exists);
+        // console.log('Is_LoggedIn_User_Exists ', Is_LoggedIn_User_Exists);
         if (!Is_LoggedIn_User_Exists) {
             console.log('Not a user');
             return res.status(400).json({
@@ -174,7 +174,7 @@ app.post("/storeLikes", async (req, res) => {
 
         // getting the fyll slide by id
         const FullSlide = await SlideModel.findOne({ _id: id });
-        console.log('matchingUser', FullSlide.aslidelikearry);
+        // console.log('matchingUser', FullSlide.aslidelikearry);
 
         if (FullSlide.aslidelikearry.length > 0) {
             const IsUserNameFound = await FullSlide.aslidelikearry.some(obj => obj.username === username_from_sl);
@@ -290,7 +290,8 @@ app.post("/saveBookmark", async (req, res) => {
     }
 });
 
-// ******************* GET ALL BOOKMARKS FOR 
+// ******************* GET ALL BOOKMARKS FOR auser
+// getting a user and checking if slide id  is available or not
 
 app.get("/getAllBookmarks/:id/:username", async (req, res) => {
     try {
@@ -311,7 +312,7 @@ app.get("/getAllBookmarks/:id/:username", async (req, res) => {
         if (isObjectIdPresent) {
             return res.status(200).json({
                 message: "Object with id   is present in bookmarkedslide array",
-                isObjectIdPresent: true
+                isObjectIdPresent: true,
             });
         } else {
             return res.status(200).json({
@@ -322,10 +323,34 @@ app.get("/getAllBookmarks/:id/:username", async (req, res) => {
 
     } catch (error) {
         console.log('getAllBookmarks error:- ', error);
-        return res.status(500).send({ error: 'Internal Server Error' });
+        return res.status(500).send({ error: 'getAllBookmarks Server Error' });
     }
 })
 
+// ******************* 
+// getting a users bookmarks array by username (using in bookmark page)
+app.get("/AUserBookmark/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+
+        // Find the user by username
+        const user = await UserModel.findOne({ username: username });
+
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found"
+            });
+        } else {
+            return res.status(200).json({
+                message: "User BookMarkArray",
+                bookmarkedslide: user.bookmarkedslide
+            });
+        }
+    } catch (error) {
+        console.log('AuserBookmark error:- ', error);
+        return res.status(500).send({ error: 'AuserBookmark Server Error' });
+    }
+})
 
 //------------------------------------------------------------------->  USER BookMark (END)  ------------------------------------------------------> */
 app.listen(PORT, async () => {

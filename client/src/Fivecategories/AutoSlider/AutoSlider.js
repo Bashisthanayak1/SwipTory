@@ -187,10 +187,6 @@ const AutoSlider = (props) => {
 
     // *****************************************************************************************************//
     useEffect(() => {
-        // if (!username_from_sl) {
-        //     console.log('loggin first');
-        //     Navigate("/")
-        // }
         async function isBookamrkAvailable() {
             try {
                 const username = username_from_sl;

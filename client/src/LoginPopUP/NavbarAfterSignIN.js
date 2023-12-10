@@ -3,8 +3,10 @@ import Hamburger from 'hamburger-react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useNavigate } from "react-router-dom";
 const NavbarAfterSignIN = (props) => {
+
+    const Navigate = useNavigate();
 
     const [shouldShowInfo, setshouldShowInfo] = useState(false)
     //addstory popUp state
@@ -221,9 +223,17 @@ const NavbarAfterSignIN = (props) => {
 
     // ***************************************************************
 
+    //onclick for bookmark
+    function GoToBookmarkPage() {
+        console.log('bookmarks button clicked');
+        Navigate("/BookMarkpage")
+    }
+
+    // ***************************************************************
+ 
     return (
         <div className='AfterSignIN--div'>
-            <button className='Bookmarks--button'><i className="fa-solid fa-bookmark"></i> Bookmarks</button>
+            <button className='Bookmarks--button' onClick={GoToBookmarkPage}><i className="fa-solid fa-bookmark"></i> Bookmarks</button>
             <button id='Addstory--button' onClick={ClickAddStory}>Add story</button>
             <img className='user__profile_photo' src="https://media.istockphoto.com/id/1268548918/vector/white-create-account-screen-icon-isolated-with-long-shadow-red-circle-button-vector.jpg?s=612x612&w=0&k=20&c=tyaWWtW2_yQyvK4hBnVXEt3tfSNr0jVC_6P7XbOBrbk=" alt="" />
 
@@ -235,7 +245,7 @@ const NavbarAfterSignIN = (props) => {
                 <img className='user__profile_photo_smallSCR' src="https://media.istockphoto.com/id/1268548918/vector/white-create-account-screen-icon-isolated-with-long-shadow-red-circle-button-vector.jpg?s=612x612&w=0&k=20&c=tyaWWtW2_yQyvK4hBnVXEt3tfSNr0jVC_6P7XbOBrbk=" alt="" />
                 <h4>{props.username}</h4>
                 <button type="button" className='Three_hidden_button' >Your Story</button>
-                <button type="button" className='Three_hidden_button'><i className="fa-solid fa-bookmark"></i> Bookmarks</button>
+                <button type="button" className='Three_hidden_button' onClick={GoToBookmarkPage}><i className="fa-solid fa-bookmark"></i> Bookmarks</button>
                 <button type="button" className='Three_hidden_button' onClick={ClickAddStory}>Add story</button>
                 <button type="button" id='Logout--button' onClick={ClickLogout}>Logout</button>
             </div>

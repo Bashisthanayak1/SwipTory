@@ -10,8 +10,7 @@ import Educationpage from '../../Fivecategories/educationPage/Educationpage.js'
 const Stories = () => {
     // to change divs color as we click
     const [clickedIndex, setClickedIndex] = useState(0);
-    const [clickedCategory, setClickedCategory] = useState("all")
-
+    const [clickedCategory, setClickedCategory] = useState("All")
 
     async function clickOnAnyCategory(categoryName, index) {
         console.log("categoryName and index:- ", categoryName, index);

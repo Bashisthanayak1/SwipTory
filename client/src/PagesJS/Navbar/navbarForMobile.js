@@ -3,7 +3,6 @@ import Register from '../../RegisterPopUp/RegisterPopUp';
 import Login from '../../LoginPopUP/LoginPopUp';
 
 const Mobilepagenavbar = (props) => {
-
     // usestate for registration button
     const [IsRegisterClicked, setRegisterClicked] = useState(false)
     // usestate for Sign button
@@ -44,7 +43,6 @@ const Mobilepagenavbar = (props) => {
                     <button onClick={SignInButton}>Sign In</button>
                 </div>
             </div>}
-
 
         </>
 
