@@ -10,7 +10,13 @@ const app = express()
 //middlewares ***************** ---- ******************
 app.use(express.json())
 //to get details from frontend
-app.use(cors())
+const corsOptions = {
+    origin: 'https://swip-tory-front.vercel.app',
+    // Add other CORS options if needed
+};
+
+app.use(cors(corsOptions));
+
 dotenv.config();
 //***************** ---- ******************
 const PORT = process.env.PORT || 8000
