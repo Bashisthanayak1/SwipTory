@@ -34,7 +34,7 @@ const Register = (props) => {
         //removing white space
         const password = userDetails.password.trim();
         if (userDetails.username && password !== "") {
-            axios.post('http://localhost:8000/register', userDetails).then((res) => {
+            axios.post('https://swip-tory-three.vercel.app/register', userDetails).then((res) => {
                 console.log('Registration success:', res.data); // Log the response data
                 setuserDetails({
                     username: "",

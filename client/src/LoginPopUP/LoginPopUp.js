@@ -31,7 +31,7 @@ const Login = (props) => {
         //removing white space
         const password = userDetails.password.trim();
         if (userDetails.username && password !== "") {
-            axios.post('http://localhost:8000/login', userDetails).then((res) => {
+            axios.post('https://swip-tory-three.vercel.app/login', userDetails).then((res) => {
                 console.log('Login :', res.data); // Log the response data
                 //saving username in sessionStorage 
                 sessionStorage.setItem("username", userDetails.username);

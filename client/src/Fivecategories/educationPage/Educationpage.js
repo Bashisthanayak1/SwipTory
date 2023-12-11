@@ -31,7 +31,7 @@ const Educationpage = () => {
     useEffect(() => {
         async function foodFunction() {
             try {
-                const foodData = await axios.get(`http://localhost:8000/FilterACategoryData?Acategory=education`);
+                const foodData = await axios.get(`https://swip-tory-three.vercel.app/FilterACategoryData?Acategory=education`);
                 // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
 

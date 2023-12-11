@@ -33,7 +33,7 @@ const Foodpage = () => {
     useEffect(() => { 
         async function foodFunction() {
             try {
-                const foodData = await axios.get(`http://localhost:8000/FilterACategoryData?Acategory=food`);
+                const foodData = await axios.get(`https://swip-tory-three.vercel.app/FilterACategoryData?Acategory=food`);
                 // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
 

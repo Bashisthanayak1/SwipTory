@@ -38,13 +38,13 @@ const BookMarkpage = () => {
     useEffect(() => {
         async function gettingAllBookmarkId() {
             try {
-                const result = await axios.get(`http://localhost:8000/AUserBookmark/${username}`)
+                const result = await axios.get(`https://swip-tory-three.vercel.app/AUserBookmark/${username}`)
                 const arrayofSlideID = result.data.bookmarkedslide
 
                 // Use Promise.all to wait for all requests to complete
                 const arrOfSlides = await Promise.all(
                     arrayofSlideID.map(async (obj, index) => {
-                        const response = await axios.get(`http://localhost:8000/AutoSlider/${obj.id}`)
+                        const response = await axios.get(`https://swip-tory-three.vercel.app/AutoSlider/${obj.id}`)
                         return response.data; // Assuming you want to store the data of each request
                     })
                 );

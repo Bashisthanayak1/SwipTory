@@ -189,7 +189,7 @@ const NavbarAfterSignIN = (props) => {
 
         if (arrayForSlides.aslide.length >= 3) {
 
-            axios.post("http://localhost:8000/AddSlideData", arrayForSlides).then(() => {
+            axios.post("https://swip-tory-three.vercel.app/AddSlideData", arrayForSlides).then(() => {
                 //after posting clear input tags text
                 arrayForSlides.aslide = [];
                 setStoryDetails({
