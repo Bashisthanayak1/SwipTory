@@ -10,13 +10,17 @@ const app = express()
 //middlewares ***************** ---- ******************
 app.use(express.json())
 //to get details from frontend
-const corsOptions = {
-    origin: ['https://swip-tory-front.vercel.app'],
-    methods: ["POST", "GET"],
-    credential: true
-};
+//https://swip-tory-front.vercel.app/
+app.use(cors({
+    origin: 'https://swip-tory-front.vercel.app',
+    // Add other CORS options if needed
+}));
 
-app.use(cors(corsOptions));
+// Additional headers
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 
 dotenv.config();
 //***************** ---- ******************
