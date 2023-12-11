@@ -9,6 +9,7 @@ const BookMarkpage = () => {
     let Navigate = useNavigate();
 
     const username = sessionStorage.getItem("username");
+
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -90,11 +91,12 @@ const BookMarkpage = () => {
 
 
     return (
+
         <div>
             <Navbar />
-            <h1 className='yourBookMark--text'>Your Bookmarks </h1>
+            {username ? <>
+                <h1 className='yourBookMark--text'>Your Bookmarks </h1>
 
-            <>
                 <div className='Food--page--container' style={{ overflow: showMoreClicked ? 'visible' : 'hidden', height: showMoreClicked ? 'auto' : '500px' }}>
                     {(!foodArray.length > 1) && <h3 className='No--stories--h3'>No stories Available</h3>}
 
@@ -105,6 +107,8 @@ const BookMarkpage = () => {
                 {(foodArray.length > 4 || (foodArray.length > 4 && windowWidth < 1230)) && <button onClick={clickShowMore} className='showmore--button'>{showMoreClicked ? "hide" : "Show more..."}</button>}
 
             </>
+                : <h1 className='Login--to--see--Bookmark'>Please Login to see your Bookmarks</h1>}
+
         </div>
     )
 }
