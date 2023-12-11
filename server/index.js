@@ -15,6 +15,9 @@ dotenv.config();
 //***************** ---- ******************
 const PORT = process.env.PORT || 8000
 
+app.get("/", (Req, res) => {
+    res.send("This is backend 1st page")
+})
 //------------------------------------------------->   USER API (START)  ------------------------------------------------->
 
 // Register API- ************************
