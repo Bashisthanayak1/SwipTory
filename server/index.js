@@ -11,8 +11,9 @@ const app = express()
 app.use(express.json())
 //to get details from frontend
 const corsOptions = {
-    origin: 'https://swip-tory-front.vercel.app',
-    // Add other CORS options if needed
+    origin: ['https://swip-tory-front.vercel.app'],
+    methods: ["POST", "GET"],
+    credential: true
 };
 
 app.use(cors(corsOptions));
