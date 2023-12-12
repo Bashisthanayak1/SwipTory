@@ -14,11 +14,20 @@ dotenv.config();
 //***************** ---- ******************
 const PORT = process.env.PORT || 8000
 
-app.use(cors({
-    origin: "https://swip-tory-front.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-}));
+// Enable CORS with specific options
+app.use(
+    cors({
+        origin: 'https://swip-tory-front.vercel.app',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true, // set credentials to true
+    })
+);
+// Additional headers
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Credentials', 'true'); // set 'true' for credentials
+    next();
+});
 
 
 app.get("/", (Req, res) => {
