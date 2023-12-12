@@ -10,13 +10,10 @@ const app = express()
 //middlewares ***************** ---- ******************
 app.use(express.json())
 //to get details from frontend
-//https://swip-tory-front.vercel.app/
 app.use(cors({
-
-    origin: "https://swip-tory-front.vercel.app",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
-
 }));
 
 // Additional headers
