@@ -7,6 +7,9 @@ import axios from 'axios';
 
 const Foodpage = () => {
     let Navigate = useNavigate();
+    axios.defaults.withCredentials = true;
+    const originURL = "https://swip-tory-three.vercel.app";
+
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -33,7 +36,7 @@ const Foodpage = () => {
     useEffect(() => { 
         async function foodFunction() {
             try {
-                const foodData = await axios.get(`https://swip-tory-three.vercel.app/FilterACategoryData?Acategory=food`);
+                const foodData = await axios.get(`${originURL}/FilterACategoryData?Acategory=food`);
                 // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
 

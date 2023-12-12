@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 const NavbarAfterSignIN = (props) => {
 
     const Navigate = useNavigate();
+    
+    axios.defaults.withCredentials = true;
+    const originURL = "https://swip-tory-three.vercel.app";
 
     const [shouldShowInfo, setshouldShowInfo] = useState(false)
     //addstory popUp state
@@ -189,7 +192,7 @@ const NavbarAfterSignIN = (props) => {
 
         if (arrayForSlides.aslide.length >= 3) {
 
-            axios.post("https://swip-tory-three.vercel.app/AddSlideData", arrayForSlides).then(() => {
+            axios.post(`${originURL}/AddSlideData`, arrayForSlides).then(() => {
                 //after posting clear input tags text
                 arrayForSlides.aslide = [];
                 setStoryDetails({

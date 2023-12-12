@@ -3,6 +3,10 @@ import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Login = (props) => {
+
+    axios.defaults.withCredentials = true;
+    const originURL = "https://swip-tory-three.vercel.app";
+
     //useStates
     const [closeLogin, setCloseLogin] = useState(true)
     const [userDetails, setuserDetails] = useState({
@@ -31,7 +35,7 @@ const Login = (props) => {
         //removing white space
         const password = userDetails.password.trim();
         if (userDetails.username && password !== "") {
-            axios.post('https://swip-tory-three.vercel.app/login', userDetails).then((res) => {
+            axios.post(`${originURL}/login`, userDetails).then((res) => {
                 console.log('Login :', res.data); // Log the response data
                 //saving username in sessionStorage 
                 sessionStorage.setItem("username", userDetails.username);

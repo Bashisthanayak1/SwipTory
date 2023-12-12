@@ -6,6 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = (props) => {
+    
+    axios.defaults.withCredentials = true;
+    const originURL = "https://swip-tory-three.vercel.app";
+
     //useStates
     const [closeRegister, setCloseRegister] = useState(true)
     const [userDetails, setuserDetails] = useState({
@@ -34,7 +38,7 @@ const Register = (props) => {
         //removing white space
         const password = userDetails.password.trim();
         if (userDetails.username && password !== "") {
-            axios.post('https://swip-tory-three.vercel.app/register', userDetails).then((res) => {
+            axios.post(`${originURL}/register`, userDetails).then((res) => {
                 console.log('Registration success:', res.data); // Log the response data
                 setuserDetails({
                     username: "",

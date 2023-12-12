@@ -6,6 +6,10 @@ import axios from 'axios';
 
 const Healthpage = () => {
     let Navigate = useNavigate();
+
+    axios.defaults.withCredentials = true;
+    const originURL = "https://swip-tory-three.vercel.app";
+
     const [foodArray, setFoodArray] = useState([]);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -31,7 +35,7 @@ const Healthpage = () => {
     useEffect(() => {
         async function foodFunction() {
             try {
-                const foodData = await axios.get(`https://swip-tory-three.vercel.app/FilterACategoryData?Acategory=health and fitness`);
+                const foodData = await axios.get(`${originURL}/FilterACategoryData?Acategory=health and fitness`);
                 // setFoodArray(foodData.data.categorydata[0].aslide);
                 setFoodArray(foodData.data.categorydata);
 

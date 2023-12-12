@@ -13,6 +13,8 @@ import Login from '../../LoginPopUP/LoginPopUp';
 
 const AutoSlider = (props) => {
     const Navigate = useNavigate();
+    axios.defaults.withCredentials = true;
+    const originURL = "https://swip-tory-three.vercel.app";
 
     // getting user Username from SS for a simple check is user logged in or not
     const username_from_sl = sessionStorage.getItem("username");
@@ -43,12 +45,12 @@ const AutoSlider = (props) => {
         console.log('isloggedinUserLikedOpenedSlide:- ', isloggedinUserLikedOpenedSlide);
         try {
             if (isloggedinUserLikedOpenedSlide) {
-                const Deleteresponse = await axios.delete("https://swip-tory-three.vercel.app/delete", { data: { id, username_from_sl } });
+                const Deleteresponse = await axios.delete(`${originURL}/delete`, { data: { id, username_from_sl } });
                 console.log('clickHeart Deleteresponse:- ', Deleteresponse);
                 setAddRedheart(false);
                 setisloggedinUserLikedOpenedSlide(false);
             } else {
-                const StoreResponse = await axios.post("https://swip-tory-three.vercel.app/storeLikes", { id, username_from_sl });
+                const StoreResponse = await axios.post(`${originURL}/storeLikes`, { id, username_from_sl });
                 console.log('clickHeart StoreResponse:- ', StoreResponse);
                 console.log('like  stored');
                 setAddRedheart(true);
@@ -67,7 +69,7 @@ const AutoSlider = (props) => {
         // getting the slider array by the id ,getting from URL
         async function dataFromId() {
             try {
-                let slideData = await axios.get(`https://swip-tory-three.vercel.app/AutoSlider/${id}`)
+                let slideData = await axios.get(`${originURL}/AutoSlider/${id}`)
                 setImages(slideData.data[0].aslide)
                 // console.log('slideData_from_id - ', slideData);
                 const LikeArray = await slideData.data[0].aslidelikearry;
@@ -172,7 +174,7 @@ const AutoSlider = (props) => {
     async function clickBookmark() {
         console.log('BookMarkClicked');
         try {
-            const successfully_bookMark_added = await axios.post("https://swip-tory-three.vercel.app/saveBookmark", { id, username_from_sl });
+            const successfully_bookMark_added = await axios.post(`${originURL}/saveBookmark`, { id, username_from_sl });
             console.log('successfully_bookMark_added or not :- ', successfully_bookMark_added.data.addedslideId);
             if (successfully_bookMark_added.data.addedslideId) {
                 setAddBlueBookMark((pre) => true)
@@ -191,7 +193,7 @@ const AutoSlider = (props) => {
             try {
                 const username = username_from_sl;
                 //sending id and user name to check if openedslide bookmarked or not
-                const response = await axios.get(`https://swip-tory-three.vercel.app/getAllBookmarks/${id}/${username}`);
+                const response = await axios.get(`${originURL}/getAllBookmarks/${id}/${username}`);
                 const BookmarkPresent = response.data.isObjectIdPresent
                 // console.log('IsBookMarkPresent:- ', BookmarkPresent);
 

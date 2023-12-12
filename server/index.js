@@ -21,7 +21,6 @@ app.use(cors({
 }));
 
 
-
 app.get("/", (Req, res) => {
     res.send("This is backend 1st page")
 })
