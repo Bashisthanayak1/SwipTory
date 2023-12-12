@@ -1,30 +1,28 @@
 const express = require('express')
-const cors = require("cors");
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const SlideModel = require("./mongodb/slideSchema")
 const UserModel = require("./mongodb/userSchema");
+const cors = require("cors");
 
 
 const app = express()
 //middlewares ***************** ---- ******************
 app.use(express.json())
-//to get details from frontend
-app.use(cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-}));
 
-// Additional headers
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
+
 
 dotenv.config();
 //***************** ---- ******************
 const PORT = process.env.PORT || 8000
+
+
+app.use(
+    cors({
+        origin: "*",
+    })
+);
+
 
 app.get("/", (Req, res) => {
     res.send("This is backend 1st page")
