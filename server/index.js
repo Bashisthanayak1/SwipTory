@@ -10,9 +10,6 @@ const app = express()
 //middlewares ***************** ---- ******************
 app.use(express.json())
 
-dotenv.config();
-//***************** ---- ******************
-const PORT = process.env.PORT || 8000
 
 // Enable CORS with specific options
 app.use(
@@ -28,6 +25,13 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', 'true'); // set 'true' for credentials
     next();
 });
+
+
+
+dotenv.config();
+//***************** ---- ******************
+const PORT = process.env.PORT || 8000
+
 
 
 app.get("/", (Req, res) => {
