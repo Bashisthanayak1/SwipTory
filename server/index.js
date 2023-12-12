@@ -10,14 +10,12 @@ const app = express()
 //middlewares ***************** ---- ******************
 app.use(express.json())
 
-
-
 dotenv.config();
 //***************** ---- ******************
 const PORT = process.env.PORT || 8000
 
 app.use(cors({
-    origin: "https://swip-tory-front.vercel.app",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
