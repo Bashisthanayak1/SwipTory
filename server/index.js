@@ -15,10 +15,13 @@ app.use(express.json())
 app.use(
     cors({
         origin: '*',
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        credentials: true, // set credentials to true
+        methods: ["post", "get", "put", "delete"],
+        credentials: true 
     })
 );
+
+
+
 // Additional headers
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
