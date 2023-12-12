@@ -14,7 +14,7 @@ app.use(express.json())
 // Enable CORS with specific options
 app.use(
     cors({
-        origin: 'https://swip-tory-front.vercel.app',
+        origin: '*',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true, // set credentials to true
     })
